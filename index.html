@@ -682,46 +682,46 @@
   </div>
 
   <div class="calendar-grid">
-    <div class="calendar-day empty"></div>
-    <div class="calendar-day empty"></div>
-    <div class="calendar-day">1</div>
-    <div class="calendar-day">2</div>
-    <div class="calendar-day medium">3</div>
-    <div class="calendar-day low">4</div>
-    <div class="calendar-day">5</div>
+  <div class="calendar-day empty"></div>
+  <div class="calendar-day empty"></div>
+  <div class="calendar-day" data-date="2026-03-01">1</div>
+  <div class="calendar-day" data-date="2026-03-02">2</div>
+  <div class="calendar-day" data-date="2026-03-03">3</div>
+  <div class="calendar-day" data-date="2026-03-04">4</div>
+  <div class="calendar-day" data-date="2026-03-05">5</div>
 
-    <div class="calendar-day">6</div>
-    <div class="calendar-day">7</div>
-    <div class="calendar-day">8</div>
-    <div class="calendar-day">9</div>
-    <div class="calendar-day">10</div>
-    <div class="calendar-day">11</div>
-    <div class="calendar-day">12</div>
+  <div class="calendar-day" data-date="2026-03-06">6</div>
+  <div class="calendar-day" data-date="2026-03-07">7</div>
+  <div class="calendar-day" data-date="2026-03-08">8</div>
+  <div class="calendar-day" data-date="2026-03-09">9</div>
+  <div class="calendar-day" data-date="2026-03-10">10</div>
+  <div class="calendar-day" data-date="2026-03-11">11</div>
+  <div class="calendar-day" data-date="2026-03-12">12</div>
 
-    <div class="calendar-day">13</div>
-    <div class="calendar-day">14</div>
-    <div class="calendar-day">15</div>
-    <div class="calendar-day">16</div>
-    <div class="calendar-day good">17</div>
-    <div class="calendar-day medium">18</div>
-    <div class="calendar-day">19</div>
+  <div class="calendar-day" data-date="2026-03-13">13</div>
+  <div class="calendar-day" data-date="2026-03-14">14</div>
+  <div class="calendar-day" data-date="2026-03-15">15</div>
+  <div class="calendar-day" data-date="2026-03-16">16</div>
+  <div class="calendar-day" data-date="2026-03-17">17</div>
+  <div class="calendar-day" data-date="2026-03-18">18</div>
+  <div class="calendar-day" data-date="2026-03-19">19</div>
 
-    <div class="calendar-day">20</div>
-    <div class="calendar-day">21</div>
-    <div class="calendar-day">22</div>
-    <div class="calendar-day low">23</div>
-    <div class="calendar-day">24</div>
-    <div class="calendar-day">25</div>
-    <div class="calendar-day">26</div>
+  <div class="calendar-day" data-date="2026-03-20">20</div>
+  <div class="calendar-day" data-date="2026-03-21">21</div>
+  <div class="calendar-day" data-date="2026-03-22">22</div>
+  <div class="calendar-day" data-date="2026-03-23">23</div>
+  <div class="calendar-day" data-date="2026-03-24">24</div>
+  <div class="calendar-day" data-date="2026-03-25">25</div>
+  <div class="calendar-day" data-date="2026-03-26">26</div>
 
-    <div class="calendar-day">27</div>
-    <div class="calendar-day">28</div>
-    <div class="calendar-day">29</div>
-    <div class="calendar-day">30</div>
-    <div class="calendar-day">31</div>
-    <div class="calendar-day empty"></div>
-    <div class="calendar-day empty"></div>
-  </div>
+  <div class="calendar-day" data-date="2026-03-27">27</div>
+  <div class="calendar-day" data-date="2026-03-28">28</div>
+  <div class="calendar-day" data-date="2026-03-29">29</div>
+  <div class="calendar-day" data-date="2026-03-30">30</div>
+  <div class="calendar-day" data-date="2026-03-31">31</div>
+  <div class="calendar-day empty"></div>
+  <div class="calendar-day empty"></div>
+</div>
 </div>
 </div>
       
@@ -1217,6 +1217,29 @@
     function getTodayTotal() {
       return getTodayEntries().reduce((sum, item) => sum + item.kcal, 0);
     }
+    
+    function getTotalByDate(dateKey) {
+  return entries
+    .filter(item => item.date === dateKey)
+    .reduce((sum, item) => sum + item.kcal, 0);
+}
+    function getCalendarDayClass(dateKey) {
+  const total = getTotalByDate(dateKey);
+
+  if (total === 0) {
+    return "";
+  }
+
+  const progress = total / dailyGoal;
+
+  if (progress < 0.5) {
+    return "low";
+  } else if (progress < 0.9) {
+    return "medium";
+  } else {
+    return "good";
+  }
+}
 
     function groupEntriesByMeal(list) {
       const order = ["Café da manhã", "Almoço", "Jantar", "Lanche"];
@@ -1324,14 +1347,28 @@
     function renderConfig() {
       goalInput.value = dailyGoal;
     }
+    function renderCalendarColors() {
+  document.querySelectorAll(".calendar-day[data-date]").forEach(dayEl => {
+    const dateKey = dayEl.dataset.date;
+
+    dayEl.classList.remove("low", "medium", "good");
+
+    const dayClass = getCalendarDayClass(dateKey);
+
+    if (dayClass) {
+      dayEl.classList.add(dayClass);
+    }
+  });
+}
 
     function renderAll() {
-      todayDateLabel.textContent = formatLongDateToday();
-      renderHero();
-      renderTodayMeals();
-      renderHistory();
-      renderConfig();
-    }
+  todayDateLabel.textContent = formatLongDateToday();
+  renderHero();
+  renderTodayMeals();
+  renderHistory();
+  renderConfig();
+  renderCalendarColors();
+}
 
     function deleteEntry(id) {
       entries = entries.filter(item => item.id !== id);
