@@ -708,7 +708,7 @@
   </div>
 
     <div class="card">
-  <div class="section-title">Março 2026</div>
+  <div class="section-title" id="calendarMonthTitle">Março 2026</div>
 
   <div class="calendar-weekdays">
     <div>Seg</div>
@@ -1071,6 +1071,7 @@
     const historyContainer = document.getElementById("historyContainer");
     const goalInput = document.getElementById("goalInput");
     const todayDateLabel = document.getElementById("todayDateLabel");
+    const calendarMonthTitle = document.getElementById("calendarMonthTitle");
 
     function loadEntries() {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -1134,6 +1135,19 @@
         searchResults.innerHTML = "";
         return;
       }
+      
+      function renderCalendarTitle() {
+  const now = new Date();
+
+  const monthYear = now.toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric"
+  });
+
+  const formatted = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
+
+  calendarMonthTitle.textContent = formatted;
+}
 
       searchResults.innerHTML = items.map(food => `
         <div class="search-result-item" data-food-id="${food.id}">
@@ -1423,6 +1437,7 @@
   renderTodayMeals();
   renderHistory();
   renderConfig();
+  renderCalendarTitle();
   renderCalendarColors();
 }
 
