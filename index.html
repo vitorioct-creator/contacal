@@ -1275,7 +1275,7 @@
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const daysInMonth = lastDay.getDate();
-
+  
   let startWeekday = firstDay.getDay();
   startWeekday = startWeekday === 0 ? 6 : startWeekday - 1;
 
@@ -1415,19 +1415,6 @@
     function renderConfig() {
       goalInput.value = dailyGoal;
     }
-    function renderCalendarColors() {
-  document.querySelectorAll(".calendar-day[data-date]").forEach(dayEl => {
-    const dateKey = dayEl.dataset.date;
-
-    dayEl.classList.remove("low", "medium", "good");
-
-    const dayClass = getCalendarDayClass(dateKey);
-
-    if (dayClass) {
-      dayEl.classList.add(dayClass);
-    }
-  });
-}
 
     function renderAll() {
   todayDateLabel.textContent = formatLongDateToday();
