@@ -708,7 +708,8 @@
   </div>
 
     <div class="card">
-  <div class="section-title" id="calendarMonthTitle">Março 2026</div>
+  <div class="card">
+  <div class="section-title" id="calendarMonthTitle">Mês</div>
 
   <div class="calendar-weekdays">
     <div>Seg</div>
@@ -720,65 +721,25 @@
     <div>Dom</div>
   </div>
 
-  <div class="calendar-grid">
-  <div class="calendar-day empty"></div>
-  <div class="calendar-day empty"></div>
-  <div class="calendar-day" data-date="2026-03-01">1</div>
-  <div class="calendar-day" data-date="2026-03-02">2</div>
-  <div class="calendar-day" data-date="2026-03-03">3</div>
-  <div class="calendar-day" data-date="2026-03-04">4</div>
-  <div class="calendar-day" data-date="2026-03-05">5</div>
+  <div class="calendar-grid" id="calendarGrid"></div>
 
-  <div class="calendar-day" data-date="2026-03-06">6</div>
-  <div class="calendar-day" data-date="2026-03-07">7</div>
-  <div class="calendar-day" data-date="2026-03-08">8</div>
-  <div class="calendar-day" data-date="2026-03-09">9</div>
-  <div class="calendar-day" data-date="2026-03-10">10</div>
-  <div class="calendar-day" data-date="2026-03-11">11</div>
-  <div class="calendar-day" data-date="2026-03-12">12</div>
+  <div class="calendar-legend">
+    <div class="legend-item">
+      <span class="legend-dot low"></span>
+      <span>Abaixo da meta</span>
+    </div>
 
-  <div class="calendar-day" data-date="2026-03-13">13</div>
-  <div class="calendar-day" data-date="2026-03-14">14</div>
-  <div class="calendar-day" data-date="2026-03-15">15</div>
-  <div class="calendar-day" data-date="2026-03-16">16</div>
-  <div class="calendar-day" data-date="2026-03-17">17</div>
-  <div class="calendar-day" data-date="2026-03-18">18</div>
-  <div class="calendar-day" data-date="2026-03-19">19</div>
+    <div class="legend-item">
+      <span class="legend-dot medium"></span>
+      <span>Quase lá</span>
+    </div>
 
-  <div class="calendar-day" data-date="2026-03-20">20</div>
-  <div class="calendar-day" data-date="2026-03-21">21</div>
-  <div class="calendar-day" data-date="2026-03-22">22</div>
-  <div class="calendar-day" data-date="2026-03-23">23</div>
-  <div class="calendar-day" data-date="2026-03-24">24</div>
-  <div class="calendar-day" data-date="2026-03-25">25</div>
-  <div class="calendar-day" data-date="2026-03-26">26</div>
-
-  <div class="calendar-day" data-date="2026-03-27">27</div>
-  <div class="calendar-day" data-date="2026-03-28">28</div>
-  <div class="calendar-day" data-date="2026-03-29">29</div>
-  <div class="calendar-day" data-date="2026-03-30">30</div>
-  <div class="calendar-day" data-date="2026-03-31">31</div>
-  <div class="calendar-day empty"></div>
-  <div class="calendar-day empty"></div>
-</div>
-</div>
-</div>
-
-    <div class="calendar-legend">
-  <div class="legend-item">
-    <span class="legend-dot low"></span>
-    <span>Abaixo da meta</span>
+    <div class="legend-item">
+      <span class="legend-dot good"></span>
+      <span>Meta batida</span>
+    </div>
   </div>
-
-  <div class="legend-item">
-    <span class="legend-dot medium"></span>
-    <span>Quase lá</span>
-  </div>
-
-  <div class="legend-item">
-    <span class="legend-dot good"></span>
-    <span>Meta batida</span>
-  </div>
+</div>
 </div>
     
     <div id="screenHistorico" class="screen">
@@ -1072,6 +1033,7 @@
     const goalInput = document.getElementById("goalInput");
     const todayDateLabel = document.getElementById("todayDateLabel");
     const calendarMonthTitle = document.getElementById("calendarMonthTitle");
+    const calendarGrid = document.getElementById("calendarGrid");
 
     function loadEntries() {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -1130,25 +1092,30 @@
     }
 
     function renderSearchResults(items) {
-      if (!items.length) {
-        searchResults.style.display = "none";
-        searchResults.innerHTML = "";
-        return;
-      }
-      
-      function renderCalendarTitle() {
-  const now = new Date();
+  if (!items.length) {
+    searchResults.style.display = "none";
+    searchResults.innerHTML = "";
+    return;
+  }
 
-  const monthYear = now.toLocaleDateString("pt-BR", {
-    month: "long",
-    year: "numeric"
+  searchResults.innerHTML = items.map(food => `
+    <div class="search-result-item" data-food-id="${food.id}">
+      <div class="result-name">${food.name}</div>
+      <div class="result-meta">${food.measures.map(m => `${m.label} · ${m.kcal} kcal`).join(" | ")}</div>
+    </div>
+  `).join("");
+
+  searchResults.style.display = "block";
+
+  document.querySelectorAll(".search-result-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const foodId = el.dataset.foodId;
+      const food = FOOD_DB.find(f => f.id === foodId);
+      selectFood(food);
+    });
   });
-
-  const formatted = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
-
-  calendarMonthTitle.textContent = formatted;
 }
-
+      
       searchResults.innerHTML = items.map(food => `
         <div class="search-result-item" data-food-id="${food.id}">
           <div class="result-name">${food.name}</div>
@@ -1310,7 +1277,56 @@
     return "good";
   }
 }
+    
+function renderCalendar() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
 
+  const monthLabel = now.toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric"
+  });
+
+  calendarMonthTitle.textContent =
+    monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1);
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const daysInMonth = lastDay.getDate();
+
+  let startWeekday = firstDay.getDay();
+  startWeekday = startWeekday === 0 ? 6 : startWeekday - 1;
+
+  let html = "";
+
+  for (let i = 0; i < startWeekday; i++) {
+    html += <div class="calendar-day empty"></div>;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateKey = ${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")};
+    const dayClass = getCalendarDayClass(dateKey);
+
+    html += <div class="calendar-day ${dayClass}" data-date="${dateKey}">${day}</div>;
+  }
+
+  const totalCells = startWeekday + daysInMonth;
+  const endEmpties = (7 - (totalCells % 7)) % 7;
+
+  for (let i = 0; i < endEmpties; i++) {
+    html += <div class="calendar-day empty"></div>;
+  }
+
+  calendarGrid.innerHTML = html;
+  document.querySelectorAll(".calendar-day[data-date]").forEach(day => {
+  day.addEventListener("click", () => {
+    const date = day.dataset.date;
+    showDayDetails(date);
+  });
+});
+}
+    
     function groupEntriesByMeal(list) {
       const order = ["Café da manhã", "Almoço", "Jantar", "Lanche"];
       const grouped = {};
@@ -1437,8 +1453,7 @@
   renderTodayMeals();
   renderHistory();
   renderConfig();
-  renderCalendarTitle();
-  renderCalendarColors();
+  renderCalendar();
 }
 
     function deleteEntry(id) {
@@ -1447,6 +1462,24 @@
       renderAll();
     }
 
+    function showDayDetails(date) {
+  const items = entries.filter(e => e.date === date);
+
+  if (!items.length) {
+    alert("Nenhum registro nesse dia.");
+    return;
+  }
+
+  let total = 0;
+
+  const list = items.map(item => {
+    total += item.kcal;
+    return • ${item.name} (${item.kcal} kcal);
+  }).join("\n");
+
+  alert(`📅 ${date}\n\n${list}\n\nTotal: ${total} kcal`);
+}
+    
     function saveGoalFromInput() {
       const value = Number(goalInput.value);
       if (!value || value <= 0) {
