@@ -6,7 +6,23 @@
   <title>ContaCal</title>
 
   <link rel="apple-touch-icon" href="icon.png">
-  
+  function showDayDetails(date) {
+  const items = entries.filter(e => e.date === date);
+
+  if (!items.length) {
+    alert("Nenhum registro nesse dia.");
+    return;
+  }
+
+  let total = 0;
+
+  const list = items.map(item => {
+    total += item.kcal;
+    return • ${item.name} (${item.kcal} kcal);
+  }).join("\n");
+
+  alert(`📅 ${date}\n\n${list}\n\nTotal: ${total} kcal`);
+}
   <style>
     :root {
       --bg: #fffaf2;
@@ -1319,12 +1335,13 @@ function renderCalendar() {
   }
 
   calendarGrid.innerHTML = html;
+
   document.querySelectorAll(".calendar-day[data-date]").forEach(day => {
-  day.addEventListener("click", () => {
-    const date = day.dataset.date;
-    showDayDetails(date);
+    day.addEventListener("click", () => {
+      const date = day.dataset.date;
+      showDayDetails(date);
+    });
   });
-});
 }
     
     function groupEntriesByMeal(list) {
