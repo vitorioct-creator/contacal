@@ -513,6 +513,30 @@
   margin-top: 16px;
 }
 
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.month-nav-btn {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: #f3e6ff;
+  color: var(--purple-dark);
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.month-nav-btn:hover {
+  transform: scale(1.05);
+}
+
 .legend-item {
   display: flex;
   align-items: center;
@@ -708,7 +732,11 @@
   </div>
 
   <div class="card">
+  <div class="calendar-header">
+  <button class="month-nav-btn" onclick="prevMonth()">←</button>
   <div class="section-title" id="calendarMonthTitle">Mês</div>
+  <button class="month-nav-btn" onclick="nextMonth()">→</button>
+</div>
 
   <div class="calendar-weekdays">
     <div>Seg</div>
@@ -1015,6 +1043,7 @@
     let selectedFood = null;
     let entries = loadEntries();
     let dailyGoal = loadGoal();
+    let currentCalendarDate = new Date();
 
     const foodSearch = document.getElementById("foodSearch");
     const searchResults = document.getElementById("searchResults");
@@ -1260,7 +1289,7 @@
 }
 
  function renderCalendar() {
-  const now = new Date();
+  const now = currentCalendarDate;
   const year = now.getFullYear();
   const month = now.getMonth();
 
@@ -1460,6 +1489,24 @@
       renderAll();
       alert("Meta salva.");
     }
+    
+    function prevMonth() {
+  currentCalendarDate = new Date(
+    currentCalendarDate.getFullYear(),
+    currentCalendarDate.getMonth() - 1,
+    1
+  );
+  renderCalendar();
+}
+
+function nextMonth() {
+  currentCalendarDate = new Date(
+    currentCalendarDate.getFullYear(),
+    currentCalendarDate.getMonth() + 1,
+    1
+  );
+  renderCalendar();
+}
 
     function clearToday() {
       const today = getTodayKey();
