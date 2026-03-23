@@ -506,6 +506,45 @@
   border-color: #7a44f0;
   color: white;
 }
+.calendar-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: inline-block;
+  border: 1px solid #eadcff;
+}
+
+.legend-dot.low {
+  background: #f3ecff;
+  border-color: #e4d4ff;
+}
+
+.legend-dot.medium {
+  background: #d7b8ff;
+  border-color: #c08cff;
+}
+
+.legend-dot.good {
+  background: #8e5cff;
+  border-color: #7a44f0;
+}
+    
    .logo {
   width: 60px;
   height: 60px;
@@ -724,7 +763,24 @@
 </div>
 </div>
 </div>
-      
+
+    <div class="calendar-legend">
+  <div class="legend-item">
+    <span class="legend-dot low"></span>
+    <span>Abaixo da meta</span>
+  </div>
+
+  <div class="legend-item">
+    <span class="legend-dot medium"></span>
+    <span>Quase lá</span>
+  </div>
+
+  <div class="legend-item">
+    <span class="legend-dot good"></span>
+    <span>Meta batida</span>
+  </div>
+</div>
+    
     <div id="screenHistorico" class="screen">
       <div class="card">
         <div class="section-title">Histórico</div>
