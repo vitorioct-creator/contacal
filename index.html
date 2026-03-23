@@ -5,22 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>ContaCal</title>
 
-  const items = entries.filter(e => e.date === date);
+  <link rel="apple-touch-icon" href="icon.png">
 
-  if (!items.length) {
-    alert("Nenhum registro nesse dia.");
-    return;
-  }
-
-  let total = 0;
-
-  const list = items.map(item => {
-    total += item.kcal;
-    return • ${item.name} (${item.kcal} kcal);
-  }).join("\n");
-
-  alert(`📅 ${date}\n\n${list}\n\nTotal: ${total} kcal`);
-}
   <style>
     :root {
       --bg: #fffaf2;
@@ -721,7 +707,6 @@
     </div>
   </div>
 
-    <div class="card">
   <div class="card">
   <div class="section-title" id="calendarMonthTitle">Mês</div>
 
@@ -754,8 +739,7 @@
     </div>
   </div>
 </div>
-</div>
-    
+
     <div id="screenHistorico" class="screen">
       <div class="card">
         <div class="section-title">Histórico</div>
@@ -1291,8 +1275,8 @@
     return "good";
   }
 }
-    
-function renderCalendar() {
+
+ function renderCalendar() {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -1315,7 +1299,7 @@ function renderCalendar() {
   let html = "";
 
   for (let i = 0; i < startWeekday; i++) {
-    html += >`<div class="calendar-day empty"></div>>`;
+    html += `<div class="calendar-day empty"></div>`;
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
@@ -1329,7 +1313,7 @@ function renderCalendar() {
   const endEmpties = (7 - (totalCells % 7)) % 7;
 
   for (let i = 0; i < endEmpties; i++) {
-    html += <div class="calendar-day empty"></div>;
+    html += `<div class="calendar-day empty"></div>`;
   }
 
   calendarGrid.innerHTML = html;
