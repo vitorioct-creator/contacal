@@ -453,6 +453,59 @@
       background: #f1e6ff;
       margin: 6px 0;
     }
+    
+    .calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-day {
+  min-height: 54px;
+  border-radius: 14px;
+  background: #f8f2ff;
+  border: 1px solid #eadcff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border: 0;
+}
+   .calendar-day.low {
+  background: #f3ecff;
+  border-color: #e4d4ff;
+  color: #6c5a8a;
+}
+
+.calendar-day.medium {
+  background: #d7b8ff;
+  border-color: #c08cff;
+  color: #2b2340;
+}
+
+.calendar-day.good {
+  background: #8e5cff;
+  border-color: #7a44f0;
+  color: white;
+}
   </style>
 </head>
 <body>
@@ -461,8 +514,42 @@
       <div class="title">ContaCal</div>
       <div class="subtitle" id="todayDateLabel">Hoje</div>
     </div>
+<div id="screenHome" class="screen active">
+  <div class="card hero">
+    <div class="section-title">ContaCal</div>
+    <div class="note">Escolha o que você quer fazer.</div>
+  </div>
 
-    <div id="screenHoje" class="screen active">
+  <div class="card">
+    <button class="btn btn-primary" onclick="switchScreen('Hoje')">
+      Registrar alimentação
+    </button>
+  </div>
+
+  <div class="card">
+    <button class="btn btn-secondary" onclick="switchScreen('Historico')">
+      Ver histórico
+    </button>
+  </div>
+  
+  <div class="card">
+  <button class="btn btn-secondary" onclick="switchScreen('Calendário')">
+    Calendário
+  </button>
+</div>
+  
+  <div class="card">
+    <button class="btn btn-secondary" onclick="switchScreen('Config')">
+      Configurações
+    </button>
+  </div>
+</div>
+    <div id="screenHoje" class="screen">
+      <div class="card">
+  <button class="btn btn-secondary" onclick="switchScreen('Home')">
+    ← Voltar para Home
+  </button>
+</div>
       <div class="card hero">
         <div class="hero-top">
           <div>
@@ -555,6 +642,76 @@
       </div>
     </div>
 
+    <div id="screenCalendario" class="screen">
+  <div class="card">
+    <button class="btn btn-secondary" onclick="switchScreen('Home')">
+      ← Voltar para Home
+    </button>
+  </div>
+
+  <div class="card hero">
+    <div class="section-title">Calendário</div>
+    <div class="note">
+      Aqui vai aparecer sua visão mensal com cores nos dias em que você bateu ou ficou perto da meta.
+    </div>
+  </div>
+
+    <div class="card">
+  <div class="section-title">Março 2026</div>
+
+  <div class="calendar-weekdays">
+    <div>Seg</div>
+    <div>Ter</div>
+    <div>Qua</div>
+    <div>Qui</div>
+    <div>Sex</div>
+    <div>Sáb</div>
+    <div>Dom</div>
+  </div>
+
+  <div class="calendar-grid">
+    <div class="calendar-day empty"></div>
+    <div class="calendar-day empty"></div>
+    <div class="calendar-day">1</div>
+    <div class="calendar-day">2</div>
+    <div class="calendar-day medium">3</div>
+    <div class="calendar-day low">4</div>
+    <div class="calendar-day">5</div>
+
+    <div class="calendar-day">6</div>
+    <div class="calendar-day">7</div>
+    <div class="calendar-day">8</div>
+    <div class="calendar-day">9</div>
+    <div class="calendar-day">10</div>
+    <div class="calendar-day">11</div>
+    <div class="calendar-day">12</div>
+
+    <div class="calendar-day">13</div>
+    <div class="calendar-day">14</div>
+    <div class="calendar-day">15</div>
+    <div class="calendar-day">16</div>
+    <div class="calendar-day good">17</div>
+    <div class="calendar-day medium">18</div>
+    <div class="calendar-day">19</div>
+
+    <div class="calendar-day">20</div>
+    <div class="calendar-day">21</div>
+    <div class="calendar-day">22</div>
+    <div class="calendar-day low">23</div>
+    <div class="calendar-day">24</div>
+    <div class="calendar-day">25</div>
+    <div class="calendar-day">26</div>
+
+    <div class="calendar-day">27</div>
+    <div class="calendar-day">28</div>
+    <div class="calendar-day">29</div>
+    <div class="calendar-day">30</div>
+    <div class="calendar-day">31</div>
+    <div class="calendar-day empty"></div>
+    <div class="calendar-day empty"></div>
+  </div>
+</div>
+      
     <div id="screenHistorico" class="screen">
       <div class="card">
         <div class="section-title">Histórico</div>
@@ -1208,9 +1365,12 @@
         document.getElementById("screenHistorico").classList.add("active");
       } else if (screenName === "Config") {
         document.getElementById("screenConfig").classList.add("active");
-      }
-
-      document.querySelector(`.tab-btn[data-screen="${screenName}"]`).classList.add("active");
+      } else if (screenName === "Calendário") {
+        document.getElementById("screenCalendario").classList.add("active");
+      } else if (screenName === "Home") {
+        document.getElementById("screenHome").classList.add("active");
+     
+      document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
     }
 
     foodSearch.addEventListener("input", () => {
