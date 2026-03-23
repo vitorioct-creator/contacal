@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>ContaCal</title>
+
+  <style>
+    :root {
+      --bg: #fffaf2;
+      --bg-soft: #fff4c7;
+      --card: #ffffff;
+      --text: #2b2340;
+      --muted: #736a8a;
+      --purple: #b78cff;
+      --purple-dark: #8e5cff;
+      --yellow: #ffd84d;
+      --yellow-soft: #fff0a8;
+      --danger: #ff6b81;
+      --success: #32b37c;
+      --border: #eee3ff;
+      --shadow: 0 10px 24px rgba(143, 92, 255, 0.10);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #fff3a0 0%, transparent 28%),
+        radial-gradient(circle at top right, #e8d6ff 0%, transparent 30%),
+        linear-gradient(180deg, #fffaf2 0%, #fffdf8 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 100px;
+    }
+
+    .app {
+      max-width: 460px;
+      margin: 0 auto;
+      padding: 18px 14px 24px;
+    }
+
+    .topbar {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 10px 4px 18px;
+    }
+
+    .title {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fff0a8 0%, #f3e6ff 100%);
+      border: 1px solid #f0dcff;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .hero-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-kcal {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      margin: 8px 0 2px;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-meta {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.75);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .status.ok { color: var(--success); }
+    .status.over { color: var(--danger); }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 900;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .meal-block {
+      margin-bottom: 14px;
+      border-radius: 16px;
+      background: #fffdf7;
+      border: 1px solid #f5ebff;
+      overflow: hidden;
+    }
+
+    .meal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: linear-gradient(90deg, rgba(255,216,77,0.22), rgba(183,140,255,0.18));
+      border-bottom: 1px solid #f0e4ff;
+    }
+
+    .meal-name {
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .meal-total {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 16px 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .food-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 12px 14px;
+      border-top: 1px solid #f8f2ff;
+      align-items: center;
+      background: white;
+    }
+
+    .food-item:first-of-type {
+      border-top: 0;
+    }
+
+    .food-main {
+      min-width: 0;
+    }
+
+    .food-name {
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .food-details {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    .food-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kcal-pill {
+      background: #fff4ba;
+      color: #6a5100;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .icon-btn {
+      border: 0;
+      background: #fff1f5;
+      color: var(--danger);
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1.5px solid #eadcff;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 16px;
+      outline: none;
+      background: white;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(183, 140, 255, 0.12);
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    .search-results {
+      display: none;
+      margin-top: 8px;
+      border: 1px solid #efe4ff;
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .search-result-item {
+      padding: 12px 14px;
+      border-top: 1px solid #f5efff;
+      cursor: pointer;
+    }
+
+    .search-result-item:first-child {
+      border-top: 0;
+    }
+
+    .search-result-item:hover {
+      background: #fcf8ff;
+    }
+
+    .result-name {
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .result-meta {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .preview-box {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff9d9, #f7edff);
+      font-size: 14px;
+      font-weight: 800;
+      display: none;
+    }
+
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 16px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple-dark), var(--yellow));
+      color: white;
+      box-shadow: 0 10px 24px rgba(142, 92, 255, 0.22);
+    }
+
+    .btn-secondary {
+      background: #fff6bf;
+      color: #5e4900;
+    }
+
+    .btn-danger {
+      background: #fff1f4;
+      color: var(--danger);
+    }
+
+    .tabbar {
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      width: calc(100% - 22px);
+      max-width: 440px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid #f0e4ff;
+      border-radius: 22px;
+      box-shadow: 0 14px 30px rgba(43,35,64,0.10);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 8px;
+      gap: 8px;
+      z-index: 50;
+    }
+
+    .tab-btn {
+      border: 0;
+      background: transparent;
+      border-radius: 16px;
+      padding: 12px 10px;
+      font-weight: 900;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #fff2a7, #efdeff);
+      color: var(--text);
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .history-day {
+      border: 1px solid #f2e8ff;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .history-date {
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .history-kcal {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--muted);
+    }
+
+    .history-line {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .settings-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .divider {
+      height: 1px;
+      background: #f1e6ff;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="title">ContaCal</div>
+      <div class="subtitle" id="todayDateLabel">Hoje</div>
+    </div>
+
+    <div id="screenHoje" class="screen active">
+      <div class="card hero">
+        <div class="hero-top">
+          <div>
+            <div class="hero-label">Consumo de hoje</div>
+            <div class="hero-kcal" id="heroKcal">0 kcal</div>
+            <div class="hero-meta" id="heroMeta">Meta: 1800 kcal</div>
+          </div>
+          <div class="badge" id="heroCount">0 itens</div>
+        </div>
+        <div id="statusBox" class="status ok">Faltam 1800 kcal</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Adicionar alimento</div>
+
+        <div class="field">
+          <label class="label">Buscar alimento</label>
+          <input id="foodSearch" type="text" placeholder="Ex: banana, arroz, feijão, leite..." autocomplete="off" />
+          <div class="hint">Escolha um alimento pronto e o app preenche as calorias sozinho. Milagre tecnológico mínimo.</div>
+          <div id="searchResults" class="search-results"></div>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label class="label">Refeição</label>
+            <select id="mealSelect">
+              <option value="Café da manhã">Café da manhã</option>
+              <option value="Almoço">Almoço</option>
+              <option value="Jantar">Jantar</option>
+              <option value="Lanche">Lanche</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="label">Quantidade</label>
+            <input id="quantityInput" type="number" min="0" step="0.1" placeholder="Ex: 2" />
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label class="label">Medida</label>
+            <select id="measureSelect">
+              <option value="">Escolha um alimento</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="label">Calorias</label>
+            <input id="autoCalories" type="text" value="0 kcal" disabled />
+          </div>
+        </div>
+
+        <div id="previewBox" class="preview-box"></div>
+
+        <button class="btn btn-primary" id="addFoodBtn">Adicionar ao dia</button>
+
+        <div class="divider"></div>
+
+        <div class="small">Não achou o alimento? Use o cadastro manual logo abaixo.</div>
+
+        <div class="field" style="margin-top: 12px;">
+          <label class="label">Nome manual</label>
+          <input id="manualName" type="text" placeholder="Ex: bolo da padaria, sobremesa, receita da sua avó" />
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label class="label">Qtd manual</label>
+            <input id="manualQty" type="number" min="0" step="0.1" placeholder="Ex: 1" />
+          </div>
+          <div class="field">
+            <label class="label">Unidade manual</label>
+            <input id="manualUnit" type="text" placeholder="Ex: fatia, porção, copo" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Calorias totais desse item</label>
+          <input id="manualTotalKcal" type="number" min="0" step="1" placeholder="Ex: 240" />
+          <div class="hint">Aqui você coloca o total do item inteiro. Só para casos fora da base.</div>
+        </div>
+
+        <button class="btn btn-secondary" id="addManualBtn">Adicionar manualmente</button>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Seu dia</div>
+        <div id="todayMealsContainer"></div>
+      </div>
+    </div>
+
+    <div id="screenHistorico" class="screen">
+      <div class="card">
+        <div class="section-title">Histórico</div>
+        <div class="note">Mostra os dias salvos no celular. Se apagar os dados do Safari, adeus histórico. Tecnologia também ama drama.</div>
+      </div>
+      <div id="historyContainer"></div>
+    </div>
+
+    <div id="screenConfig" class="screen">
+      <div class="card">
+        <div class="section-title">Configurações</div>
+        <div class="settings-box">
+          <div class="field">
+            <label class="label">Meta calórica diária</label>
+            <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
+          </div>
+          <button class="btn btn-primary" id="saveGoalBtn">Salvar meta</button>
+          <div class="note">Essa meta é usada para calcular quanto falta ou quanto passou no dia.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Banco de alimentos</div>
+        <div class="note">
+          Este app já vem com uma base inicial de alimentos comuns, com medidas tipo unidade, colher, concha, gramas e copo.  
+          Não é infinita, porque eu ainda não codifiquei a totalidade da culinária humana.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Dados</div>
+        <button class="btn btn-danger" id="clearTodayBtn" style="margin-bottom: 10px;">Limpar somente hoje</button>
+        <button class="btn btn-danger" id="clearAllBtn">Apagar tudo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <button class="tab-btn active" data-screen="Hoje">Hoje</button>
+    <button class="tab-btn" data-screen="Historico">Histórico</button>
+    <button class="tab-btn" data-screen="Config">Config</button>
+  </div>
+
+  <script>
+    const FOOD_DB = [
+      {
+        id: "banana",
+        name: "Banana",
+        aliases: ["banana", "banana prata", "banana nanica"],
+        measures: [
+          { label: "1 unidade média", kcal: 86 },
+          { label: "100 g", kcal: 89 }
+        ]
+      },
+      {
+        id: "maca",
+        name: "Maçã",
+        aliases: ["maca", "maçã"],
+        measures: [
+          { label: "1 unidade média", kcal: 72 },
+          { label: "100 g", kcal: 56 }
+        ]
+      },
+      {
+        id: "pera",
+        name: "Pera",
+        aliases: ["pera"],
+        measures: [
+          { label: "1 unidade média", kcal: 96 },
+          { label: "100 g", kcal: 57 }
+        ]
+      },
+      {
+        id: "mamão",
+        name: "Mamão",
+        aliases: ["mamão", "mamao"],
+        measures: [
+          { label: "100 g", kcal: 45 },
+          { label: "1 fatia média", kcal: 77 }
+        ]
+      },
+      {
+        id: "melancia",
+        name: "Melancia",
+        aliases: ["melancia"],
+        measures: [
+          { label: "100 g", kcal: 30 },
+          { label: "1 fatia média", kcal: 45 }
+        ]
+      },
+      {
+        id: "leite_integral",
+        name: "Leite integral",
+        aliases: ["leite", "leite integral"],
+        measures: [
+          { label: "1 copo (200 ml)", kcal: 122 },
+          { label: "100 ml", kcal: 61 }
+        ]
+      },
+      {
+        id: "iogurte_natural",
+        name: "Iogurte natural",
+        aliases: ["iogurte", "iogurte natural"],
+        measures: [
+          { label: "1 pote (170 g)", kcal: 108 },
+          { label: "100 g", kcal: 63 }
+        ]
+      },
+      {
+        id: "ovo",
+        name: "Ovo",
+        aliases: ["ovo", "ovos"],
+        measures: [
+          { label: "1 unidade", kcal: 78 }
+        ]
+      },
+      {
+        id: "pao_frances",
+        name: "Pão francês",
+        aliases: ["pão", "pao", "pão francês", "pao frances"],
+        measures: [
+          { label: "1 unidade", kcal: 135 }
+        ]
+      },
+      {
+        id: "queijo_mussarela",
+        name: "Queijo mussarela",
+        aliases: ["queijo", "mussarela", "muçarela", "queijo mussarela"],
+        measures: [
+          { label: "1 fatia", kcal: 65 },
+          { label: "100 g", kcal: 330 }
+        ]
+      },
+      {
+        id: "presunto",
+        name: "Presunto",
+        aliases: ["presunto"],
+        measures: [
+          { label: "1 fatia", kcal: 27 },
+          { label: "100 g", kcal: 108 }
+        ]
+      },
+      {
+        id: "arroz_branco",
+        name: "Arroz branco cozido",
+        aliases: ["arroz", "arroz branco", "arroz cozido"],
+        measures: [
+          { label: "1 colher de sopa", kcal: 32 },
+          { label: "100 g", kcal: 130 }
+        ]
+      },
+      {
+        id: "feijao",
+        name: "Feijão cozido",
+        aliases: ["feijão", "feijao"],
+        measures: [
+          { label: "1 concha média", kcal: 90 },
+          { label: "1 colher de sopa", kcal: 18 },
+          { label: "100 g", kcal: 76 }
+        ]
+      },
+      {
+        id: "macarrao",
+        name: "Macarrão cozido",
+        aliases: ["macarrão", "macarrao", "massa"],
+        measures: [
+          { label: "1 pegador médio", kcal: 220 },
+          { label: "100 g", kcal: 157 }
+        ]
+      },
+      {
+        id: "frango",
+        name: "Frango grelhado",
+        aliases: ["frango", "peito de frango", "frango grelhado"],
+        measures: [
+          { label: "100 g", kcal: 165 },
+          { label: "1 filé médio", kcal: 220 }
+        ]
+      },
+      {
+        id: "carne_bovina",
+        name: "Carne bovina cozida",
+        aliases: ["carne", "bife", "carne bovina"],
+        measures: [
+          { label: "100 g", kcal: 250 },
+          { label: "1 bife médio", kcal: 290 }
+        ]
+      },
+      {
+        id: "peixe",
+        name: "Peixe cozido/grelhado",
+        aliases: ["peixe"],
+        measures: [
+          { label: "100 g", kcal: 140 },
+          { label: "1 filé médio", kcal: 170 }
+        ]
+      },
+      {
+        id: "farinha_mandioca",
+        name: "Farinha de mandioca",
+        aliases: ["farinha", "farinha de mandioca"],
+        measures: [
+          { label: "1 colher de sopa", kcal: 35 },
+          { label: "100 g", kcal: 365 }
+        ]
+      },
+      {
+        id: "aveia",
+        name: "Aveia",
+        aliases: ["aveia"],
+        measures: [
+          { label: "1 colher de sopa", kcal: 55 },
+          { label: "100 g", kcal: 389 }
+        ]
+      },
+      {
+        id: "acucar",
+        name: "Açúcar",
+        aliases: ["açúcar", "acucar"],
+        measures: [
+          { label: "1 colher de sopa", kcal: 48 },
+          { label: "1 colher de chá", kcal: 16 }
+        ]
+      },
+      {
+        id: "cafe",
+        name: "Café sem açúcar",
+        aliases: ["café", "cafe"],
+        measures: [
+          { label: "1 xícara", kcal: 2 }
+        ]
+      },
+      {
+        id: "toddy",
+        name: "Achocolatado em pó",
+        aliases: ["toddy", "nescau", "achocolatado"],
+        measures: [
+          { label: "1 colher de sopa", kcal: 37 }
+        ]
+      },
+      {
+        id: "bolacha_agua_sal",
+        name: "Bolacha água e sal",
+        aliases: ["bolacha", "bolacha água e sal", "bolacha agua e sal", "biscoito"],
+        measures: [
+          { label: "1 unidade", kcal: 27 }
+        ]
+      },
+      {
+        id: "bolo",
+        name: "Bolo simples",
+        aliases: ["bolo"],
+        measures: [
+          { label: "1 fatia média", kcal: 240 },
+          { label: "100 g", kcal: 300 }
+        ]
+      },
+      {
+        id: "suco_maracuja",
+        name: "Suco de maracujá",
+        aliases: ["suco de maracujá", "suco de maracuja", "suco"],
+        measures: [
+          { label: "1 copo (200 ml)", kcal: 90 },
+          { label: "100 ml", kcal: 45 }
+        ]
+      }
+    ];
+
+    const STORAGE_KEY = "contacal_entries_v2";
+    const GOAL_KEY = "contacal_goal_v2";
+
+    let selectedFood = null;
+    let entries = loadEntries();
+    let dailyGoal = loadGoal();
+
+    const foodSearch = document.getElementById("foodSearch");
+    const searchResults = document.getElementById("searchResults");
+    const mealSelect = document.getElementById("mealSelect");
+    const quantityInput = document.getElementById("quantityInput");
+    const measureSelect = document.getElementById("measureSelect");
+    const autoCalories = document.getElementById("autoCalories");
+    const previewBox = document.getElementById("previewBox");
+    const heroKcal = document.getElementById("heroKcal");
+    const heroMeta = document.getElementById("heroMeta");
+    const heroCount = document.getElementById("heroCount");
+    const statusBox = document.getElementById("statusBox");
+    const todayMealsContainer = document.getElementById("todayMealsContainer");
+    const historyContainer = document.getElementById("historyContainer");
+    const goalInput = document.getElementById("goalInput");
+    const todayDateLabel = document.getElementById("todayDateLabel");
+
+    function loadEntries() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    }
+
+    function saveEntries() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    function loadGoal() {
+      return Number(localStorage.getItem(GOAL_KEY)) || 1800;
+    }
+
+    function saveGoal() {
+      localStorage.setItem(GOAL_KEY, String(dailyGoal));
+    }
+
+    function getTodayKey() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatDateLabel(dateKey) {
+      const [y, m, d] = dateKey.split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function formatLongDateToday() {
+      const now = new Date();
+      return now.toLocaleDateString("pt-BR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long"
+      });
+    }
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function searchFoods(query) {
+      const q = normalizeText(query);
+      if (!q) return [];
+      return FOOD_DB.filter(food => {
+        const inName = normalizeText(food.name).includes(q);
+        const inAliases = food.aliases.some(alias => normalizeText(alias).includes(q));
+        return inName || inAliases;
+      }).slice(0, 8);
+    }
+
+    function renderSearchResults(items) {
+      if (!items.length) {
+        searchResults.style.display = "none";
+        searchResults.innerHTML = "";
+        return;
+      }
+
+      searchResults.innerHTML = items.map(food => `
+        <div class="search-result-item" data-food-id="${food.id}">
+          <div class="result-name">${food.name}</div>
+          <div class="result-meta">${food.measures.map(m => `${m.label} · ${m.kcal} kcal`).join(" | ")}</div>
+        </div>
+      `).join("");
+
+      searchResults.style.display = "block";
+
+      document.querySelectorAll(".search-result-item").forEach(el => {
+        el.addEventListener("click", () => {
+          const foodId = el.dataset.foodId;
+          const food = FOOD_DB.find(f => f.id === foodId);
+          selectFood(food);
+        });
+      });
+    }
+
+    function selectFood(food) {
+      selectedFood = food;
+      foodSearch.value = food.name;
+      searchResults.style.display = "none";
+      searchResults.innerHTML = "";
+
+      measureSelect.innerHTML = food.measures.map((measure, idx) => `
+        <option value="${idx}">${measure.label}</option>
+      `).join("");
+
+      quantityInput.value = "1";
+      updatePreview();
+    }
+
+    function updatePreview() {
+      if (!selectedFood) {
+        autoCalories.value = "0 kcal";
+        previewBox.style.display = "none";
+        previewBox.innerHTML = "";
+        return;
+      }
+
+      const qty = Number(quantityInput.value) || 0;
+      const measureIndex = Number(measureSelect.value || 0);
+      const measure = selectedFood.measures[measureIndex];
+
+      const totalKcal = Math.round(qty * measure.kcal);
+
+      autoCalories.value = `${totalKcal} kcal`;
+
+      if (qty > 0) {
+        previewBox.style.display = "block";
+        previewBox.innerHTML = `
+          ${selectedFood.name} · ${qty} × ${measure.label} = <strong>${totalKcal} kcal</strong>
+        `;
+      } else {
+        previewBox.style.display = "none";
+      }
+    }
+
+    function addSelectedFood() {
+      if (!selectedFood) {
+        alert("Escolhe um alimento da lista primeiro.");
+        return;
+      }
+
+      const qty = Number(quantityInput.value);
+      if (!qty || qty <= 0) {
+        alert("Coloca uma quantidade válida.");
+        return;
+      }
+
+      const measureIndex = Number(measureSelect.value || 0);
+      const measure = selectedFood.measures[measureIndex];
+      const totalKcal = Math.round(qty * measure.kcal);
+
+      entries.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+        date: getTodayKey(),
+        meal: mealSelect.value,
+        name: selectedFood.name,
+        quantity: qty,
+        unit: measure.label,
+        kcal: totalKcal,
+        source: "auto"
+      });
+
+      saveEntries();
+      resetAutoForm();
+      renderAll();
+    }
+
+    function addManualFood() {
+      const name = document.getElementById("manualName").value.trim();
+      const qty = Number(document.getElementById("manualQty").value);
+      const unit = document.getElementById("manualUnit").value.trim();
+      const kcal = Number(document.getElementById("manualTotalKcal").value);
+
+      if (!name || !qty || !unit || !kcal || kcal <= 0) {
+        alert("Preenche o cadastro manual direito.");
+        return;
+      }
+
+      entries.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+        date: getTodayKey(),
+        meal: mealSelect.value,
+        name,
+        quantity: qty,
+        unit,
+        kcal: Math.round(kcal),
+        source: "manual"
+      });
+
+      saveEntries();
+      document.getElementById("manualName").value = "";
+      document.getElementById("manualQty").value = "";
+      document.getElementById("manualUnit").value = "";
+      document.getElementById("manualTotalKcal").value = "";
+      renderAll();
+    }
+
+    function resetAutoForm() {
+      selectedFood = null;
+      foodSearch.value = "";
+      quantityInput.value = "";
+      measureSelect.innerHTML = `<option value="">Escolha um alimento</option>`;
+      autoCalories.value = "0 kcal";
+      previewBox.style.display = "none";
+      previewBox.innerHTML = "";
+    }
+
+    function getTodayEntries() {
+      const today = getTodayKey();
+      return entries.filter(item => item.date === today);
+    }
+
+    function getTodayTotal() {
+      return getTodayEntries().reduce((sum, item) => sum + item.kcal, 0);
+    }
+
+    function groupEntriesByMeal(list) {
+      const order = ["Café da manhã", "Almoço", "Jantar", "Lanche"];
+      const grouped = {};
+      order.forEach(meal => grouped[meal] = []);
+
+      list.forEach(item => {
+        if (!grouped[item.meal]) grouped[item.meal] = [];
+        grouped[item.meal].push(item);
+      });
+
+      return grouped;
+    }
+
+    function renderHero() {
+      const todayItems = getTodayEntries();
+      const total = getTodayTotal();
+      const diff = dailyGoal - total;
+
+      heroKcal.textContent = `${total} kcal`;
+      heroMeta.textContent = `Meta: ${dailyGoal} kcal`;
+      heroCount.textContent = `${todayItems.length} ${todayItems.length === 1 ? "item" : "itens"}`;
+
+      if (diff >= 0) {
+        statusBox.className = "status ok";
+        statusBox.textContent = `Faltam ${diff} kcal`;
+      } else {
+        statusBox.className = "status over";
+        statusBox.textContent = `Você passou ${Math.abs(diff)} kcal`;
+      }
+    }
+
+    function renderTodayMeals() {
+      const grouped = groupEntriesByMeal(getTodayEntries());
+      const order = ["Café da manhã", "Almoço", "Jantar", "Lanche"];
+
+      let html = "";
+
+      order.forEach(meal => {
+        const items = grouped[meal] || [];
+        const mealTotal = items.reduce((sum, item) => sum + item.kcal, 0);
+
+        html += `
+          <div class="meal-block">
+            <div class="meal-header">
+              <div class="meal-name">${meal}</div>
+              <div class="meal-total">${mealTotal} kcal</div>
+            </div>
+            ${
+              items.length
+                ? items.map(item => `
+                  <div class="food-item">
+                    <div class="food-main">
+                      <div class="food-name">${item.name}</div>
+                      <div class="food-details">${item.quantity} × ${item.unit}</div>
+                    </div>
+                    <div class="food-actions">
+                      <div class="kcal-pill">${item.kcal} kcal</div>
+                      <button class="icon-btn" onclick="deleteEntry('${item.id}')">✕</button>
+                    </div>
+                  </div>
+                `).join("")
+                : `<div class="empty">Nada registrado aqui ainda.</div>`
+            }
+          </div>
+        `;
+      });
+
+      todayMealsContainer.innerHTML = html;
+    }
+
+    function renderHistory() {
+      const byDate = {};
+
+      entries.forEach(item => {
+        if (!byDate[item.date]) byDate[item.date] = [];
+        byDate[item.date].push(item);
+      });
+
+      const dates = Object.keys(byDate).sort((a, b) => b.localeCompare(a));
+
+      if (!dates.length) {
+        historyContainer.innerHTML = `<div class="card"><div class="empty">Seu histórico ainda está vazio.</div></div>`;
+        return;
+      }
+
+      historyContainer.innerHTML = dates.map(date => {
+        const dayItems = byDate[date];
+        const total = dayItems.reduce((sum, item) => sum + item.kcal, 0);
+
+        return `
+          <div class="history-day">
+            <div class="history-top">
+              <div class="history-date">${formatDateLabel(date)}</div>
+              <div class="history-kcal">${total} kcal</div>
+            </div>
+            ${dayItems.map(item => `
+              <div class="history-line">${item.meal} · ${item.name} · ${item.quantity} × ${item.unit} · ${item.kcal} kcal</div>
+            `).join("")}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderConfig() {
+      goalInput.value = dailyGoal;
+    }
+
+    function renderAll() {
+      todayDateLabel.textContent = formatLongDateToday();
+      renderHero();
+      renderTodayMeals();
+      renderHistory();
+      renderConfig();
+    }
+
+    function deleteEntry(id) {
+      entries = entries.filter(item => item.id !== id);
+      saveEntries();
+      renderAll();
+    }
+
+    function saveGoalFromInput() {
+      const value = Number(goalInput.value);
+      if (!value || value <= 0) {
+        alert("Coloca uma meta válida.");
+        return;
+      }
+      dailyGoal = Math.round(value);
+      saveGoal();
+      renderAll();
+      alert("Meta salva.");
+    }
+
+    function clearToday() {
+      const today = getTodayKey();
+      entries = entries.filter(item => item.date !== today);
+      saveEntries();
+      renderAll();
+      alert("Os registros de hoje foram apagados.");
+    }
+
+    function clearAll() {
+      const ok = confirm("Apagar tudo mesmo? Histórico inteiro, sem drama depois.");
+      if (!ok) return;
+      entries = [];
+      saveEntries();
+      renderAll();
+      alert("Tudo apagado.");
+    }
+
+    function switchScreen(screenName) {
+      document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+
+      if (screenName === "Hoje") {
+        document.getElementById("screenHoje").classList.add("active");
+      } else if (screenName === "Historico") {
+        document.getElementById("screenHistorico").classList.add("active");
+      } else if (screenName === "Config") {
+        document.getElementById("screenConfig").classList.add("active");
+      }
+
+      document.querySelector(`.tab-btn[data-screen="${screenName}"]`).classList.add("active");
+    }
+
+    foodSearch.addEventListener("input", () => {
+      selectedFood = null;
+      measureSelect.innerHTML = `<option value="">Escolha um alimento</option>`;
+      autoCalories.value = "0 kcal";
+      previewBox.style.display = "none";
+
+      const results = searchFoods(foodSearch.value);
+      renderSearchResults(results);
+    });
+
+    quantityInput.addEventListener("input", updatePreview);
+    measureSelect.addEventListener("change", updatePreview);
+
+    document.getElementById("addFoodBtn").addEventListener("click", addSelectedFood);
+    document.getElementById("addManualBtn").addEventListener("click", addManualFood);
+    document.getElementById("saveGoalBtn").addEventListener("click", saveGoalFromInput);
+    document.getElementById("clearTodayBtn").addEventListener("click", clearToday);
+    document.getElementById("clearAllBtn").addEventListener("click", clearAll);
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        switchScreen(btn.dataset.screen);
+      });
+    });
+
+    renderAll();
+
+    window.deleteEntry = deleteEntry;
+  </script>
+</body>
+</html>
