@@ -1114,24 +1114,6 @@
   });
 }
       
-      searchResults.innerHTML = items.map(food => `
-        <div class="search-result-item" data-food-id="${food.id}">
-          <div class="result-name">${food.name}</div>
-          <div class="result-meta">${food.measures.map(m => `${m.label} · ${m.kcal} kcal`).join(" | ")}</div>
-        </div>
-      `).join("");
-
-      searchResults.style.display = "block";
-
-      document.querySelectorAll(".search-result-item").forEach(el => {
-        el.addEventListener("click", () => {
-          const foodId = el.dataset.foodId;
-          const food = FOOD_DB.find(f => f.id === foodId);
-          selectFood(food);
-        });
-      });
-    }
-
     function selectFood(food) {
       selectedFood = food;
       foodSearch.value = food.name;
