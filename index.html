@@ -533,7 +533,7 @@
   </div>
   
   <div class="card">
-  <button class="btn btn-secondary" onclick="switchScreen('Calendário')">
+  <button class="btn btn-secondary" onclick="switchScreen('Calendario')">
     Calendário
   </button>
 </div>
@@ -1365,13 +1365,13 @@
         document.getElementById("screenHistorico").classList.add("active");
       } else if (screenName === "Config") {
         document.getElementById("screenConfig").classList.add("active");
-      } else if (screenName === "Calendário") {
+      } else if (screenName === "Calendario") {
         document.getElementById("screenCalendario").classList.add("active");
       } else if (screenName === "Home") {
         document.getElementById("screenHome").classList.add("active");
-     
-      document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
     }
+      document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
+  }
 
     foodSearch.addEventListener("input", () => {
       selectedFood = null;
