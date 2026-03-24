@@ -25,6 +25,28 @@
       --radius: 18px;
     }
 
+    body.dark-mode {
+      --bg: #15121d;
+      --bg-soft: #221b30;
+      --card: #1e1929;
+      --text: #f3ecff;
+      --muted: #b6a8cf;
+      --purple: #b78cff;
+      --purple-dark: #a97dff;
+      --yellow: #ffd84d;
+      --yellow-soft: #4c3e12;
+      --danger: #ff7d95;
+      --success: #49d39a;
+      --border: #312846;
+      --shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+    body.dark-mode {
+      background:
+        radial-gradient(circle at top left, #3b2c0a 0%, transparent 28%),
+        radial-gradient(circle at top right, #2b1f42 0%, transparent 30%),
+        linear-gradient(180deg, #15121d 0%, #110f17 100%);
+}
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -74,7 +96,12 @@
       padding: 16px;
       margin-bottom: 14px;
       border: 1px solid var(--border);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
+
+    .card:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 14px 28px rgba(143, 92, 255, 0.14);
 
     .hero {
       background: linear-gradient(135deg, #fff0a8 0%, #f3e6ff 100%);
@@ -186,10 +213,22 @@
       border-top: 1px solid #f8f2ff;
       align-items: center;
       background: white;
+      animation: fadeItem 0.25s ease;
     }
 
     .food-item:first-of-type {
       border-top: 0;
+    }
+
+    @keyframes fadeItem {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .food-main {
@@ -334,6 +373,16 @@
       font-size: 16px;
       font-weight: 900;
       cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+      opacity: 0.96;
     }
 
     .btn-primary {
@@ -393,6 +442,7 @@
 
     .screen.active {
       display: block;
+      animation: fadeScreen 0.22s ease;
     }
 
     .history-day {
@@ -579,6 +629,17 @@
   width: 60px;
   height: 60px;
   animation: floatLogo 4s ease-in-out infinite;
+}
+
+      @keyframes fadeScreen {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .logo:hover {
@@ -828,6 +889,7 @@
             <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
           </div>
           <button class="btn btn-primary" id="saveGoalBtn">Salvar meta</button>
+          <button class="btn btn-secondary" id="toggleThemeBtn">Alternar modo noturno</button>
           <div class="note">Essa meta é usada para calcular quanto falta ou quanto passou no dia.</div>
         </div>
       </div>
@@ -1082,6 +1144,7 @@
 
     const STORAGE_KEY = "contacal_entries_v2";
     const GOAL_KEY = "contacal_goal_v2";
+    const THEME_KEY = "contacal_theme_v1";
 
     let selectedFood = null;
     let entries = loadEntries();
@@ -1598,6 +1661,25 @@
       goalInput.value = dailyGoal;
     }
 
+    function loadTheme() {
+     return localStorage.getItem(THEME_KEY) || "light";
+}
+
+   function applyTheme(theme) {
+     if (theme === "dark") {
+       document.body.classList.add("dark-mode");
+     } else {
+       document.body.classList.remove("dark-mode");
+  }
+}
+
+function toggleTheme() {
+  const isDark = document.body.classList.contains("dark-mode");
+  const nextTheme = isDark ? "light" : "dark";
+  localStorage.setItem(THEME_KEY, nextTheme);
+  applyTheme(nextTheme);
+}
+
     function renderAll() {
   todayDateLabel.textContent = formatLongDateToday();
   renderHero();
@@ -1718,6 +1800,7 @@ function nextMonth() {
     document.getElementById("saveGoalBtn").addEventListener("click", saveGoalFromInput);
     document.getElementById("clearTodayBtn").addEventListener("click", clearToday);
     document.getElementById("clearAllBtn").addEventListener("click", clearAll);
+    document.getElementById("toggleThemeBtn").addEventListener("click", toggleTheme);
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1725,6 +1808,7 @@ function nextMonth() {
       });
     });
 
+    applyTheme(loadTheme());
     renderAll();
 
     window.deleteEntry = deleteEntry;
