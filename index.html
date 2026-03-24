@@ -2449,6 +2449,12 @@ function updateCircle(id, textId, percent) {
 
     function renderConfig() {
       goalInput.value = dailyGoal;
+      
+      const userNameInput = document.getElementById("userNameInput");
+
+      if (userNameInput) {
+         userNameInput.value = loadUserName();
+      }
     }
 
     function loadTheme() {
@@ -2461,6 +2467,14 @@ function updateCircle(id, textId, percent) {
      } else {
        document.body.classList.remove("dark-mode");
   }
+}
+
+function saveUserName(name) {
+  localStorage.setItem("userName", name);
+}
+
+function loadUserName() {
+  return localStorage.getItem("userName") || "";
 }
 
 function toggleTheme() {
@@ -2527,6 +2541,23 @@ function toggleTheme() {
       saveEntries();
       renderAll();
     }
+    
+    const userNameInput = document.getElementById("userNameInput");
+const saveUserNameBtn = document.getElementById("saveUserNameBtn");
+
+if (saveUserNameBtn) {
+  saveUserNameBtn.onclick = function () {
+    const name = userNameInput.value.trim();
+
+    if (!name) {
+      alert("Digite um nome válido.");
+      return;
+    }
+
+    saveUserName(name);
+    renderAll();
+  };
+}
 
     function showDayDetails(date) {
   const items = entries.filter(e => e.date === date);
