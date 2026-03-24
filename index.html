@@ -176,9 +176,15 @@
 
   #screenHome {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 18px;
     align-items: start;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  #screenHome .card {
+    width: 100%;
   }
 
   #screenHome .card.hero {
