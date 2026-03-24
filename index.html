@@ -173,7 +173,17 @@
 }
 
 .home-hero {
-  min-height: 130px;
+  min-height: 150px;
+  border-radius: 24px;
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: linear-gradient(135deg, #8e5cff, #b78cff);
+  color: white;
+  overflow: hidden;
+  position: relative;
 }
 
 .home-grid {
@@ -637,6 +647,17 @@
       border: 1px solid #f5ebff;
       overflow: hidden;
     }
+    
+    .home-hero::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 160px;
+  height: 160px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
 
     .meal-header {
       display: flex;
@@ -1102,6 +1123,27 @@
   animation: floatLogo 4s ease-in-out infinite;
 }
 
+  .hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-title {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.hero-sub {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.hero-avatar img {
+  width: 110px;
+  height: auto;
+}
+
       @keyframes fadeScreen {
   from {
     opacity: 0;
@@ -1112,7 +1154,7 @@
     transform: translateY(0);
   }
 }
-
+s
 .logo:hover {
   transform: scale(1.1) rotate(-5deg);
 }
@@ -1148,10 +1190,16 @@
     </aside>
 
     <section class="home-main">
-      <div class="card hero home-hero">
-        <div class="section-title">ContaCal</div>
-        <div class="note">Escolha o que você quer fazer.</div>
-      </div>
+     <div class="card hero home-hero">
+       <div class="hero-text">
+        <div class="hero-title">Bem-vinda, Tay</div>
+        <div class="hero-sub">Acompanhe sua alimentação hoje</div>
+  </div>
+
+  <div class="hero-avatar">
+    <img src="avatar-feminino.png" />
+  </div>
+</div>
       
       <div class="home-stats">
   <div class="card stat-card">
@@ -2353,6 +2401,18 @@ function toggleTheme() {
   renderHomeStats();
   renderCircles();
   renderMiniChart();
+}
+
+const userGender = localStorage.getItem("gender") || "f";
+
+const avatar = document.querySelector(".hero-avatar img");
+
+if (avatar) {
+  if (userGender === "f") {
+    avatar.src = "avatar-feminino.png";
+  } else {
+    avatar.src = "avatar-masculino.png";
+  }
 }
 
     function deleteEntry(id) {
