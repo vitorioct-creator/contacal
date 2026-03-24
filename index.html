@@ -1776,6 +1776,7 @@ s
     const STORAGE_KEY = "contacal_entries_v2";
     const GOAL_KEY = "contacal_goal_v2";
     const THEME_KEY = "contacal_theme_v1";
+    const USER_NAME_KEY = "contacal_user_name_v1";
 
     let selectedFood = null;
     let entries = loadEntries();
@@ -1900,6 +1901,29 @@ s
       quantityInput.value = "1";
       updatePreview();
     }
+    
+    function loadUserName() {
+  return localStorage.getItem(USER_NAME_KEY) || "";
+}
+
+function saveUserName(name) {
+  localStorage.setItem(USER_NAME_KEY, name.trim());
+}
+
+function getOrAskUserName() {
+  let name = loadUserName();
+
+  if (!name) {
+    name = prompt("Qual é o seu nome?");
+    if (name && name.trim()) {
+      saveUserName(name);
+      return name.trim();
+    }
+    return "você";
+  }
+
+  return name;
+}
 
     function updatePreview() {
       if (!selectedFood) {
