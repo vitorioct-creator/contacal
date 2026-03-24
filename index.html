@@ -1515,11 +1515,20 @@ s
       <div class="card">
         <div class="section-title">Configurações</div>
         <div class="settings-box">
+          
           <div class="field">
             <label class="label">Meta calórica diária</label>
             <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
           </div>
+          
           <button class="btn btn-primary" id="saveGoalBtn">Salvar meta</button>
+          <div class="field">
+            <label class="label">Seu nome</label>
+            <input id="userNameInput" type="text" placeholder="Ex: Tay" />
+          </div>
+
+          <button class="btn btn-secondary" id="saveUserNameBtn">Salvar nome</button>
+          
           <button class="btn btn-secondary" id="toggleThemeBtn">Alternar modo noturno</button>
           <div class="note">Essa meta é usada para calcular quanto falta ou quanto passou no dia.</div>
         </div>
@@ -2473,17 +2482,43 @@ function toggleTheme() {
   renderHomeStats();
   renderCircles();
   renderMiniChart();
-}
 
-const userGender = localStorage.getItem("gender") || "f";
+  // 👇 AVATAR DINÂMICO
+  const userGender = localStorage.getItem("gender") || "f";
+  const avatar = document.querySelector(".hero-avatar img");
 
-const avatar = document.querySelector(".hero-avatar img");
+  if (avatar) {
+    avatar.src = userGender === "f"
+      ? "avatar-feminino.png"
+      : "avatar-masculino.png";
+  }
 
-if (avatar) {
-  if (userGender === "f") {
-    avatar.src = "avatar-feminino.png";
-  } else {
-    avatar.src = "avatar-masculino.png";
+  // 👇 TEXTO DINÂMICO DO HERO
+  const heroTitle = document.getElementById("heroWelcomeTitle");
+  const heroSub = document.getElementById("heroWelcomeSub");
+
+  if (heroTitle && heroSub) {
+    const hour = new Date().getHours();
+    const today = getTodayTotal();
+
+    let greeting;
+    if (hour < 12) greeting = "Bom dia";
+    else if (hour < 18) greeting = "Boa tarde";
+    else greeting = "Boa noite";
+
+    let message;
+    if (today === 0) {
+      message = "Você ainda não registrou nada hoje";
+    } else if (today < dailyGoal * 0.5) {
+      message = "Você está começando bem o dia";
+    } else if (today < dailyGoal) {
+      message = "Tá indo bem, continua assim";
+    } else {
+      message = "Hoje passou da meta, amanhã ajusta";
+    }
+
+    heroTitle.textContent = `${greeting}, Tay`;
+    heroSub.textContent = message;
   }
 }
 
