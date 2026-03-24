@@ -182,6 +182,16 @@
   gap: 16px;
 }
 
+  .mini-chart {
+    margin-top: 16px;
+    height: 120px;
+}
+
+.mini-chart canvas {
+  width: 100%;
+  height: 100%;
+}
+
 .home-stats {
   display: grid;
   grid-template-columns: 1fr;
@@ -1141,6 +1151,29 @@
         </div>
       </div>
     </section>
+    <aside class="home-right">
+  <div class="card right-card">
+    <div class="right-title">Progresso</div>
+
+    <div class="circle-stat">
+      <div class="circle" id="circleToday">
+        <span id="circleTodayText">0%</span>
+      </div>
+      <div class="circle-label">Hoje</div>
+    </div>
+
+    <div class="circle-stat">
+      <div class="circle" id="circleWeek">
+        <span id="circleWeekText">0%</span>
+      </div>
+      <div class="circle-label">Média semanal</div>
+    </div>
+
+    <div class="mini-chart">
+      <canvas id="miniChart"></canvas>
+    </div>
+  </div>
+</aside>
   </div>
 </div>
     <div id="screenHoje" class="screen">
@@ -1729,6 +1762,19 @@
         return;
       }
 
+      function updateCircle(id, percent) {
+       const circle = document.getElementById(id);
+        if (!circle) return;
+        
+       const text = circle.querySelector("span");
+
+       circle.style.background = `conic-gradient(#b78cff ${percent}%, #eee ${percent}%)`;
+
+        if (text) {
+        text.innerText = percent + "%";
+}
+      }
+
       const qty = Number(quantityInput.value) || 0;
       const measureIndex = Number(measureSelect.value || 0);
       const measure = selectedFood.measures[measureIndex];
@@ -1746,6 +1792,39 @@
         previewBox.style.display = "none";
       }
     }
+
+    function renderCircles() {
+     const today = getTodayTotal();
+
+     const todayPercent = dailyGoal > 0 
+       ? Math.min(100, Math.round((today / dailyGoal) * 100)) 
+       : 0;
+
+  const last7 = Object.entries(groupEntriesByDate())
+    .slice(-7)
+    .map(([_, total]) => total);
+
+  const avg = last7.length
+    ? last7.reduce((a, b) => a + b, 0) / last7.length
+    : 0;
+
+  const weekPercent = dailyGoal > 0 
+    ? Math.min(100, Math.round((avg / dailyGoal) * 100)) 
+    : 0;
+
+  updateCircle("circleToday", "circleTodayText", todayPercent);
+  updateCircle("circleWeek", "circleWeekText", weekPercent);
+}
+
+function updateCircle(id, textId, percent) {
+  const el = document.getElementById(id);
+  const text = document.getElementById(textId);
+
+  if (!el || !text) return;
+
+  el.style.background = conic-gradient(#b78cff ${percent}%, #eee ${percent}%);
+  text.textContent = percent + "%";
+}
 
     function addSelectedFood() {
       if (!selectedFood) {
@@ -1918,6 +1997,47 @@
 
       return grouped;
     }
+
+    function groupEntriesByDate() {
+  const grouped = {};
+  entries.forEach(item => {
+    if (!grouped[item.date]) grouped[item.date] = 0;
+    grouped[item.date] += item.kcal;
+  });
+  return grouped;
+}
+
+    function renderMiniChart() {
+  const canvas = document.getElementById("miniChart");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const data = Object.entries(groupEntriesByDate())
+    .slice(-7)
+    .map(([_, total]) => total);
+
+  const max = Math.max(...data, dailyGoal, 1);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const width = canvas.width;
+  const height = canvas.height;
+
+  const barWidth = width / data.length;
+
+  data.forEach((value, i) => {
+    const barHeight = (value / max) * height;
+
+    ctx.fillStyle = "#b78cff";
+    ctx.fillRect(
+      i * barWidth + 4,
+      height - barHeight,
+      barWidth - 8,
+      barHeight
+    );
+  });
+}
 
     function renderHero() {
       const todayItems = getTodayEntries();
@@ -2162,6 +2282,8 @@ function toggleTheme() {
   renderEvolutionSummary();
   renderEvolutionChart();
   renderHomeStats();
+  renderCircles();
+  renderMiniChart();
 }
 
     function deleteEntry(id) {
