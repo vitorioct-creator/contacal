@@ -251,6 +251,51 @@
   .subtitle {
     font-size: 18px;
   }
+  
+  #screenHome.screen.active {
+  display: block;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#screenHome.screen.active .home-desktop {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+#screenHome.screen.active .home-sidebar {
+  display: block;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 24px 18px;
+  min-height: 560px;
+}
+
+#screenHome.screen.active .home-main {
+  display: block;
+}
+
+#screenHome.screen.active .home-hero {
+  margin-bottom: 18px;
+}
+
+#screenHome.screen.active .home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+#screenHome.screen.active .home-action {
+  min-height: 130px;
+}
+
+#screenHome.screen.active .home-action-wide {
+  grid-column: 1 / -1;
+}
 
   #screenHome.screen.active {
     display: grid;
