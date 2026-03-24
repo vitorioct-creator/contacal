@@ -620,6 +620,12 @@
 </div>
   
   <div class="card">
+  <button class="btn btn-secondary" onclick="switchScreen('Evolucao')">
+    Ver evolução
+  </button>
+</div>
+  
+  <div class="card">
     <button class="btn btn-secondary" onclick="switchScreen('Config')">
       Configurações
     </button>
@@ -795,6 +801,33 @@
           <div class="note">Essa meta é usada para calcular quanto falta ou quanto passou no dia.</div>
         </div>
       </div>
+      
+      <div id="screenEvolucao" class="screen">
+  <div class="card">
+    <button class="btn btn-secondary" onclick="switchScreen('Home')">
+      ← Voltar para Home
+    </button>
+  </div>
+
+  <div class="card hero">
+    <div class="section-title">Evolução</div>
+    <div class="note">
+      Aqui você vai acompanhar seu progresso ao longo dos dias.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Resumo</div>
+    <div id="evolutionSummary" class="note">
+      Carregando dados...
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Gráfico</div>
+    <canvas id="evolutionChart" height="200"></canvas>
+  </div>
+</div>
 
       <div class="card">
         <div class="section-title">Banco de alimentos</div>
@@ -1546,6 +1579,8 @@ function nextMonth() {
         document.getElementById("screenHistorico").classList.add("active");
       } else if (screenName === "Config") {
         document.getElementById("screenConfig").classList.add("active");
+      } else if (screenName === "Evolucao") {
+        document.getElementById("screenEvolucao").classList.add("active");
       } else if (screenName === "Calendario") {
         document.getElementById("screenCalendario").classList.add("active");
       } else if (screenName === "Home") {
