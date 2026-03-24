@@ -1873,8 +1873,26 @@ function updateCircle(id, textId, percent) {
 
   if (!el || !text) return;
 
-  el.style.background = `conic-gradient(#b78cff ${percent}%, #eee ${percent}%)`;
-  text.textContent = percent + "%";
+  let current = 0;
+  const duration = percent < 30 ? 400 : 800;
+  const stepTime = 10;
+  const steps = duration / stepTime;
+  const increment = percent / steps;
+
+  const interval = setInterval(() => {
+    current += increment;
+
+    if (current >= percent) {
+      current = percent;
+      clearInterval(interval);
+    }
+
+    const rounded = Math.round(current);
+
+    el.style.background = `conic-gradient(#b78cff ${rounded}%, #eee ${rounded}%)`;
+    text.textContent = rounded + "%";
+
+  }, stepTime);
 }
 
     function addSelectedFood() {
