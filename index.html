@@ -271,6 +271,53 @@
   background: rgba(183, 140, 255, 0.12);
   transform: translateX(4px);
 }
+.right-card {
+  padding: 18px;
+}
+
+.right-title {
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.circle-stat {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: conic-gradient(#b78cff 0%, #eee 0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  position: relative;
+  font-weight: 900;
+}
+
+.circle::before {
+  content: "";
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.circle span {
+  position: relative;
+  z-index: 1;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.circle-label {
+  font-size: 13px;
+  color: var(--muted);
+}
 
     @media (min-width: 900px) {
   .app {
@@ -296,6 +343,10 @@
   justify-content: center;
 }
 
+  #screenHome.screen.active .home-right {
+  display: block;
+}
+
   #screenHome.screen.active .home-desktop {
     width: 100%;
     max-width: 1100px;
@@ -303,7 +354,7 @@
 
 #screenHome.screen.active .home-desktop {
   display: grid;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 250px 1fr 250px;
   gap: 24px;
   align-items: start;
 }
@@ -1822,7 +1873,7 @@ function updateCircle(id, textId, percent) {
 
   if (!el || !text) return;
 
-  el.style.background = conic-gradient(#b78cff ${percent}%, #eee ${percent}%);
+  el.style.background = `conic-gradient(#b78cff ${percent}%, #eee ${percent}%)`;
   text.textContent = percent + "%";
 }
 
