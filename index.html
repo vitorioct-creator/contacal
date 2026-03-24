@@ -39,6 +39,8 @@
       --success: #57d8a4;
       --border: #3a3050;
       --shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+
+      background: radial-gradient(circle at top, #1a1525, #0f0c17);
 }
 
     body.dark-mode .meal-block {
@@ -643,6 +645,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .calendar-day {
@@ -658,10 +661,19 @@
   color: var(--text);
 }
 
+  .calendar-day:hover {
+   transform: scale(1.08);
+   transition: 0.2s;
+}
+
 .calendar-day.today {
   border: 2px solid var(--purple-dark);
   font-weight: 900;
   transform: scale(1.05);
+}
+
+.calendar-day:active {
+  transform: scale(0.95);
 }
 
 .calendar-day.empty {
