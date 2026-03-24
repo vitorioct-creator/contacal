@@ -282,10 +282,14 @@
   }
   
   #screenHome.screen.active {
-  display: block;
-  max-width: 1100px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
+
+  #screenHome.screen.active .home-desktop {
+    width: 100%;
+    max-width: 1100px;
+  }
 
 #screenHome.screen.active .home-desktop {
   display: grid;
