@@ -173,17 +173,65 @@
 }
 
 .home-hero {
-  min-height: 150px;
-  border-radius: 24px;
-  padding: 22px;
+  min-height: 220px;
+  border-radius: 28px;
+  padding: 26px 28px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
+  justify-content: space-between;
+  position: relative;
+  overflow: visible;
   background: linear-gradient(135deg, #8e5cff, #b78cff);
   color: white;
-  overflow: hidden;
-  position: relative;
+}
+
+.hero-text {
+  width: 52%;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.hero-sub {
+  font-size: 17px;
+  line-height: 1.4;
+  opacity: 0.95;
+  max-width: 360px;
+}
+
+.hero-avatar {
+  position: absolute;
+  right: -10px;
+  bottom: -8px;
+  width: 320px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 18px 28px rgba(43, 35, 64, 0.22));
+}
+
+.home-hero::after {
+  content: "";
+  position: absolute;
+  right: 110px;
+  top: 18px;
+  width: 180px;
+  height: 180px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 50%;
 }
 
 .home-grid {
