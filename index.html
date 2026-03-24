@@ -812,7 +812,8 @@
 
   <div class="card">
     <div class="section-title">Gráfico</div>
-    <canvas id="evolutionChart" height="200"></canvas>
+    <div style="height: 220px;">
+      <canvas id="evolutionChart"></canvas>
   </div>
 </div>
 
@@ -1082,6 +1083,7 @@
     let selectedFood = null;
     let entries = loadEntries();
     let dailyGoal = loadGoal();
+    let evolutionChartInstance = null;
     let currentCalendarDate = new Date();
 
     const foodSearch = document.getElementById("foodSearch");
@@ -1102,6 +1104,7 @@
     const calendarMonthTitle = document.getElementById("calendarMonthTitle");
     const calendarGrid = document.getElementById("calendarGrid");
     const evolutionSummary = document.getElementById("evolutionSummary");
+    const evolutionChartCanvas = document.getElementById("evolutionChart");
 
     function loadEntries() {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -1521,6 +1524,73 @@
   `;
 }
 
+   function renderEvolutionChart() {
+  if (!evolutionChartCanvas) return;
+
+  const grouped = {};
+
+  entries.forEach(item => {
+    if (!grouped[item.date]) grouped[item.date] = 0;
+    grouped[item.date] += item.kcal;
+  });
+
+  const dates = Object.keys(grouped).sort();
+
+  if (evolutionChartInstance) {
+    evolutionChartInstance.destroy();
+    evolutionChartInstance = null;
+  }
+
+  if (!dates.length) {
+    const ctx = evolutionChartCanvas.getContext("2d");
+    ctx.clearRect(0, 0, evolutionChartCanvas.width, evolutionChartCanvas.height);
+    return;
+  }
+
+  const labels = dates.map(date => {
+    const [y, m, d] = date.split("-");
+    return `${d}/${m}`;
+  });
+
+  const values = dates.map(date => grouped[date]);
+  const goalLine = dates.map(() => dailyGoal);
+
+  evolutionChartInstance = new Chart(evolutionChartCanvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Calorias",
+          data: values,
+          tension: 0.3,
+          fill: false
+        },
+        {
+          label: "Meta",
+          data: goalLine,
+          tension: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
     function renderConfig() {
       goalInput.value = dailyGoal;
     }
@@ -1533,6 +1603,7 @@
   renderConfig();
   renderCalendar();
   renderEvolutionSummary();
+  renderEvolutionChart();
 }
 
     function deleteEntry(id) {
@@ -1654,6 +1725,7 @@ function nextMonth() {
     renderAll();
 
     window.deleteEntry = deleteEntry;
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </script>
 </body>
 </html>
