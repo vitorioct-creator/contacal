@@ -1101,6 +1101,7 @@
     const todayDateLabel = document.getElementById("todayDateLabel");
     const calendarMonthTitle = document.getElementById("calendarMonthTitle");
     const calendarGrid = document.getElementById("calendarGrid");
+    const evolutionSummary = document.getElementById("evolutionSummary");
 
     function loadEntries() {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -1484,6 +1485,41 @@
         `;
       }).join("");
     }
+    
+    function renderEvolutionSummary() {
+  if (!evolutionSummary) return;
+
+  if (!entries.length) {
+    evolutionSummary.innerHTML = "Ainda não há dados suficientes para mostrar sua evolução.";
+    return;
+  }
+
+  const groupedByDate = {};
+
+  entries.forEach(item => {
+    if (!groupedByDate[item.date]) {
+      groupedByDate[item.date] = 0;
+    }
+    groupedByDate[item.date] += item.kcal;
+  });
+
+  const dates = Object.keys(groupedByDate);
+  const totalDays = dates.length;
+
+  const totalCalories = dates.reduce((sum, date) => {
+    return sum + groupedByDate[date];
+  }, 0);
+
+  const averageCalories = Math.round(totalCalories / totalDays);
+
+  const goalDays = dates.filter(date => groupedByDate[date] >= dailyGoal).length;
+
+  evolutionSummary.innerHTML = `
+    <b>Dias registrados:</b> ${totalDays}<br>
+    <b>Média diária:</b> ${averageCalories} kcal<br>
+    <b>Dias com meta batida:</b> ${goalDays}
+  `;
+}
 
     function renderConfig() {
       goalInput.value = dailyGoal;
@@ -1496,6 +1532,7 @@
   renderHistory();
   renderConfig();
   renderCalendar();
+  renderEvolutionSummary();
 }
 
     function deleteEntry(id) {
