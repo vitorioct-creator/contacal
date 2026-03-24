@@ -788,21 +788,8 @@
       </div>
       <div id="historyContainer"></div>
     </div>
-
-    <div id="screenConfig" class="screen">
-      <div class="card">
-        <div class="section-title">Configurações</div>
-        <div class="settings-box">
-          <div class="field">
-            <label class="label">Meta calórica diária</label>
-            <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
-          </div>
-          <button class="btn btn-primary" id="saveGoalBtn">Salvar meta</button>
-          <div class="note">Essa meta é usada para calcular quanto falta ou quanto passou no dia.</div>
-        </div>
-      </div>
-      
-      <div id="screenEvolucao" class="screen">
+    
+     <div id="screenEvolucao" class="screen">
   <div class="card">
     <button class="btn btn-secondary" onclick="switchScreen('Home')">
       ← Voltar para Home
@@ -828,6 +815,19 @@
     <canvas id="evolutionChart" height="200"></canvas>
   </div>
 </div>
+
+    <div id="screenConfig" class="screen">
+      <div class="card">
+        <div class="section-title">Configurações</div>
+        <div class="settings-box">
+          <div class="field">
+            <label class="label">Meta calórica diária</label>
+            <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
+          </div>
+          <button class="btn btn-primary" id="saveGoalBtn">Salvar meta</button>
+          <div class="note">Essa meta é usada para calcular quanto falta ou quanto passou no dia.</div>
+        </div>
+      </div>
 
       <div class="card">
         <div class="section-title">Banco de alimentos</div>
