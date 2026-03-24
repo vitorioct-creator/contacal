@@ -160,6 +160,79 @@
       background: #352b48;
 }
 
+.home-desktop {
+  display: block;
+}
+
+.home-sidebar {
+  display: none;
+}
+
+.home-main {
+  width: 100%;
+}
+
+.home-hero {
+  min-height: 130px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.home-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sidebar-title {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.sidebar-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-link {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 14px;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(183, 140, 255, 0.12);
+  transform: translateX(4px);
+}
+
     @media (min-width: 900px) {
   .app {
     max-width: 1100px;
@@ -865,39 +938,63 @@
   <div class="subtitle" id="todayDateLabel">Hoje</div>
 </div>
 <div id="screenHome" class="screen active">
-  <div class="card hero">
-    <div class="section-title">ContaCal</div>
-    <div class="note">Escolha o que você quer fazer.</div>
-  </div>
+  <div class="home-desktop">
+    <aside class="home-sidebar">
+      <div class="sidebar-brand">
+        <img src="logo.png" class="logo" />
+        <div>
+          <div class="sidebar-title">ContaCal</div>
+          <div class="sidebar-subtitle">Seu painel</div>
+        </div>
+      </div>
 
-  <div class="card">
-    <button class="btn btn-primary" onclick="switchScreen('Hoje')">
-      Registrar alimentação
-    </button>
-  </div>
+      <div class="sidebar-menu">
+        <button class="sidebar-link" onclick="switchScreen('Hoje')">Hoje</button>
+        <button class="sidebar-link" onclick="switchScreen('Historico')">Histórico</button>
+        <button class="sidebar-link" onclick="switchScreen('Calendario')">Calendário</button>
+        <button class="sidebar-link" onclick="switchScreen('Evolucao')">Evolução</button>
+        <button class="sidebar-link" onclick="switchScreen('Config')">Configurações</button>
+      </div>
+    </aside>
 
-  <div class="card">
-    <button class="btn btn-secondary" onclick="switchScreen('Historico')">
-      Ver histórico
-    </button>
-  </div>
-  
-  <div class="card">
-  <button class="btn btn-secondary" onclick="switchScreen('Calendario')">
-    Calendário
-  </button>
-</div>
-  
-  <div class="card">
-  <button class="btn btn-secondary" onclick="switchScreen('Evolucao')">
-    Ver evolução
-  </button>
-</div>
-  
-  <div class="card">
-    <button class="btn btn-secondary" onclick="switchScreen('Config')">
-      Configurações
-    </button>
+    <section class="home-main">
+      <div class="card hero home-hero">
+        <div class="section-title">ContaCal</div>
+        <div class="note">Escolha o que você quer fazer.</div>
+      </div>
+
+      <div class="home-grid">
+        <div class="card home-action">
+          <button class="btn btn-primary" onclick="switchScreen('Hoje')">
+            Registrar alimentação
+          </button>
+        </div>
+
+        <div class="card home-action">
+          <button class="btn btn-secondary" onclick="switchScreen('Historico')">
+            Ver histórico
+          </button>
+        </div>
+
+        <div class="card home-action">
+          <button class="btn btn-secondary" onclick="switchScreen('Calendario')">
+            Calendário
+          </button>
+        </div>
+
+        <div class="card home-action">
+          <button class="btn btn-secondary" onclick="switchScreen('Evolucao')">
+            Ver evolução
+          </button>
+        </div>
+
+        <div class="card home-action home-action-wide">
+          <button class="btn btn-secondary" onclick="switchScreen('Config')">
+            Configurações
+          </button>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
     <div id="screenHoje" class="screen">
