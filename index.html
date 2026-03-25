@@ -3356,24 +3356,35 @@ function nextMonth() {
     }
 
     function switchScreen(screenName) {
-      document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
-      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
 
-      if (screenName === "Hoje") {
-        document.getElementById("screenHoje").classList.add("active");
-      } else if (screenName === "Historico") {
-        document.getElementById("screenHistorico").classList.add("active");
-      } else if (screenName === "Config") {
-        document.getElementById("screenConfig").classList.add("active");
-      } else if (screenName === "Evolucao") {
-        document.getElementById("screenEvolucao").classList.add("active");
-      } else if (screenName === "Calendario") {
-        document.getElementById("screenCalendario").classList.add("active");
-      } else if (screenName === "Home") {
-        document.getElementById("screenHome").classList.add("active");
-    }
-      document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  document.querySelectorAll(".sidebar-link").forEach(link => {
+    link.classList.remove("active");
+  });
+
+  if (screenName === "Hoje") {
+    document.getElementById("screenHoje").classList.add("active");
+  } else if (screenName === "Historico") {
+    document.getElementById("screenHistorico").classList.add("active");
+  } else if (screenName === "Config") {
+    document.getElementById("screenConfig").classList.add("active");
+  } else if (screenName === "Evolucao") {
+    document.getElementById("screenEvolucao").classList.add("active");
+  } else if (screenName === "Calendario") {
+    document.getElementById("screenCalendario").classList.add("active");
+  } else if (screenName === "Home") {
+    document.getElementById("screenHome").classList.add("active");
   }
+
+  document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
+  document.querySelector(`.sidebar-link[data-screen="${screenName}"]`)?.classList.add("active");
+}
 
     foodSearch.addEventListener("input", () => {
       selectedFood = null;
