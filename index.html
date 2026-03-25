@@ -363,10 +363,12 @@ body.dark-mode .food-list .selected {
 
 .home-sidebar {
   display: none;
+  transition: width 0.35s eade, padding 0.35s ease;
 }
 
 .home-main {
   width: 100%;
+  transition: padding 0.35s ease;
 }
 
 .home-hero {
@@ -535,7 +537,7 @@ body.dark-mode .food-list .selected {
   font-weight: 800;
   color: var(--text);
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: all 0.25s ease;
   
   display: flex;
   align-items: center;
@@ -675,7 +677,8 @@ body.dark-mode .food-list .selected {
   margin: 0 !important;
   padding: 0 24px 0 0;
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) 270px;
+  grid-template-columns: 250px minmax(0, 1fr) 270px;
+  transition: grid-template-columns 0.35s ease;
   gap: 24px;
   align-items: start;
   border-radius: 0;
