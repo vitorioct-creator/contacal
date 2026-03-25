@@ -1284,6 +1284,24 @@ body.dark-mode .food-list .selected {
       background: linear-gradient(135deg, #fff2a7, #efdeff);
       color: var(--text);
     }
+    
+    .back-btn {
+  background: none;
+  border: none;
+  font-weight: 700;
+  color: #6f5f8f;
+  cursor: pointer;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+  color: #3d2b6b;
+  transform: translateX(-2px);
+}
 
     .screen {
       display: none;
@@ -1809,6 +1827,11 @@ body.dark-mode .food-list .selected {
       <div class="screen-content">
         
       <div class="card">
+        
+        <button class="back-btn" onclick="switchScreen('Home')">
+          ← Voltar para Home
+  </button>
+        
         <div class="section-title">Histórico</div>
         <div class="note">Mostra os dias salvos no celular. Se apagar os dados do Safari, adeus histórico. Tecnologia também ama drama.</div>
       </div>
