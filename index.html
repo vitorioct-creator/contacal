@@ -642,6 +642,16 @@ body.dark-mode .food-list .selected {
   width: 18px;
   height: 18px;
 }
+
+.app-content .screen {
+  display: none;
+  width: 100%;
+  min-width: 0;
+}
+
+.app-content .screen.active {
+  display: block;
+}
       
   .app {
   width: 100%;
@@ -709,6 +719,16 @@ body.dark-mode .food-list .selected {
   box-shadow: none;
   border: none;
   overflow: hidden;
+}
+
+#screenHoje .card,
+#screenHistorico .card,
+#screenCalendario .card,
+#screenEvolucao .card,
+#screenConfig .card {
+  max-width: 980px;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .home-sidebar {
