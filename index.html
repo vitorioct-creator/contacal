@@ -711,19 +711,16 @@ body.dark-mode .food-list .selected {
   overflow: hidden;
 }
 
-#screenHome.screen.active .home-sidebar {
+.home-sidebar {
   display: block;
-  position: sticky;
-  top: 0;
   height: 100vh;
-  padding: 20px 18px;
-  background: linear-gradient(180deg, #f8f5ff 0%, #efe9ff 100%);
+  padding: 28px 22px;
+  background: linear-gradient(180deg, #f7f4ff 0%, #efe8ff 100%);
   border: none;
   border-right: 1px solid rgba(171, 149, 219, 0.18);
   border-radius: 0 28px 28px 0;
   box-shadow: 8px 0 24px rgba(118, 93, 173, 0.08);
   overflow: visible;
-  transition: width 0.22s ease, padding 0.2s ease;
 }
 
 #screenHome.screen.active .home-stats {
@@ -733,23 +730,21 @@ body.dark-mode .food-list .selected {
   margin-bottom: 18px;
 }
 
-#screenHome.screen.active .sidebar-brand {
+.sidebar-brand {
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(140, 120, 190, 0.16);
   margin-bottom: 22px;
 }
 
-#screenHome.screen.active .sidebar-title {
-  font-size: 28px;
+.sidebar-title {
   color: #2f2149;
 }
 
-#screenHome.screen.active .sidebar-subtitle {
-  font-size: 15px;
+.sidebar-subtitle {
   color: #6f5f8f;
 }
 
-#screenHome.screen.active .sidebar-link {
+.sidebar-link {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -764,23 +759,23 @@ body.dark-mode .food-list .selected {
   transition: 0.18s ease;
 }
 
-#screenHome.screen.active .sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.82);
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.85);
   border-color: rgba(183, 140, 255, 0.22);
   transform: translateX(4px);
   color: #352754;
 }
 
-#screenHome.screen.active .sidebar-link.active {
+.sidebar-link.active {
   background: linear-gradient(135deg, #fff1a8, #f3ebff);
   color: #2f2149;
 }
 
-#screenHome.screen.active .sidebar-link i {
+.sidebar-link i {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-}
+
 
 #screenHome.screen.active .home-hero {
   min-height: 180px;
