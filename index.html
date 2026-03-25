@@ -891,6 +891,37 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-toggle {
   margin-right: auto;
 }
 
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link {
+  position: relative;
+}
+
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 70px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  
+  background: linear-gradient(135deg, #2a1f45, #1a1330);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.18s ease;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
 #screenHoje.screen.active .card {
   width:100%;
 }
@@ -1655,28 +1686,28 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-toggle {
       </div>
 
       <div class="sidebar-menu">
-        <button class="sidebar-link active" onclick="switchScreen('Hoje')">
-  <i data-lucide="house"></i>
+        <button class="sidebar-link" data-label="Hoje" onclick="showScreen('home')">
+  <i data-lucide="home"></i>
   <span class="sidebar-text">Hoje</span>
 </button>
 
-<button class="sidebar-link" onclick="switchScreen('Historico')">
+<button class="sidebar-link" data-label="Histórico" onclick="showScreen('history')">
   <i data-lucide="history"></i>
   <span class="sidebar-text">Histórico</span>
 </button>
 
-<button class="sidebar-link" onclick="switchScreen('Calendario')">
-  <i data-lucide="calendar-days"></i>
+<button class="sidebar-link" data-label="Calendário" onclick="showScreen('calendar')">
+  <i data-lucide="calendar"></i>
   <span class="sidebar-text">Calendário</span>
 </button>
 
-<button class="sidebar-link" onclick="switchScreen('Evolucao')">
-  <i data-lucide="chart-column"></i>
+<button class="sidebar-link" data-label="Evolução" onclick="showScreen('evolution')">
+  <i data-lucide="activity"></i>
   <span class="sidebar-text">Evolução</span>
 </button>
 
-<button class="sidebar-link" onclick="switchScreen('Config')">
-  <i data-lucide="settings-2"></i>
+<button class="sidebar-link" data-label="Configurações" onclick="showScreen('config')">
+  <i data-lucide="settings"></i>
   <span class="sidebar-text">Configurações</span>
 </button>
       </div>
