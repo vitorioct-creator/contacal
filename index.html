@@ -173,16 +173,18 @@
 }
 
 .home-hero {
-  min-height: 180px;
-  border-radius: 24px;
-  padding: 22px 28px;
+  min-height: 190px;
+  border-radius: 28px;
+  padding: 24px 28px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8e5ff, #f0d6ff);
-  color: white;
+  background:
+    linear-gradient(135deg, rgba(255, 243, 170, 0.95), rgba(255,255,255,0.92)),
+    radial-gradient(circle at top right, rgba(183,140,255,0.16), transparent 40%);
+  box-shadow: 0 12px 30px rgba(100, 70, 140, 0.10);
 }
 
 .hero-text {
@@ -193,20 +195,19 @@
 }
 
 .hero-title {
-  font-size: 30px;
+  font-size: 31px;
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.02;
+  letter-spacing: -0.6px;
+  color: #2f2149;
   margin-bottom: 10px;
-  color: #2a1f3d;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .hero-sub {
   font-size: 15px;
-  line-height: 1.4;
-  opacity: 0.95;
-  max-width: 360px;
-  color: #5a4a7a
+  line-height: 1.45;
+  color: #6a5b86;
+  max-width: 250px;
 }
 
 .hero-avatar {
@@ -269,6 +270,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 20px;
 }
 
 .stat-label {
@@ -291,6 +293,7 @@
   align-items: center;
   justify-content: center;
   min-height: 110px;
+  padding: 18px;
 }
 
 .sidebar-brand {
@@ -337,7 +340,12 @@
   transform: translateX(4px);
 }
 .right-card {
-  padding: 18px;
+  padding: 22px 18px;
+  min-height: 100%;
+  background: rgba(255,255,255,0.82);
+  border-radius: 28px;
+  box-shadow: 0 10px 26px rgba(95, 75, 130, 0.08);
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
 .right-title {
@@ -414,24 +422,27 @@
 
   #screenHome.screen.active .home-desktop {
     width: 100%;
-    max-width: none;
-    padding: 20px;
-  }
-
-#screenHome.screen.active .home-desktop {
-  display: grid;
-  grid-template-columns: 250px 1fr 250px;
-  gap: 24px;
-  align-items: start;
+    max-width: 1280px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 260px 1fr 250px;
+    gap: 24px;
+    align-items: start;
+    margin: 24 px auto;
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 50px rgba(120, 90, 180, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 #screenHome.screen.active .home-sidebar {
   display: block;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-  padding: 24px 18px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 28px;
+  box-shadow: 0 10px 26px rgba(95, 75, 130, 0.08);
+  padding: 22px;
   min-height: 560px;
 }
 
@@ -583,9 +594,9 @@
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
       background:
-        radial-gradient(circle at top left, #fff3a0 0%, transparent 28%),
-        radial-gradient(circle at top right, #e8d6ff 0%, transparent 30%),
-        linear-gradient(180deg, #fffaf2 0%, #fffdf8 100%);
+        radial-gradient(circle at top left, #fff4a0 0%, transparent 26%),
+        radial-gradient(circle at top right, #eadbff 0%, transparent 28%),
+        linear-gradient(180deg, #f8f4ff 0%, #f4effd 100%);
       color: var(--text);
       min-height: 100vh;
       padding-bottom: 100px;
@@ -618,13 +629,13 @@
     }
 
     .card {
-      background: var(--card);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 18px;
-      margin-bottom: 14px;
-      border: 1px solid var(--border);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+       background: rgba(255,255,255,0.82);
+       border-radius: 24px;
+       box-shadow: 0 10px 26px rgba(95, 75, 130, 0.08);
+       border: 1px solid rgba(255,255,255,0.8);
+       padding: 18px;
+       margin-bottom: 14px;
+       transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .card:hover {
@@ -916,10 +927,10 @@
     .btn {
       width: 100%;
       border: 0;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 18px 18px;
       font-size: 17px;
-      font-weight: 900;
+      font-weight: 800;
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
     }
@@ -941,7 +952,7 @@
 
     .btn-secondary {
       background: #fff6bf;
-      color: #5e4900;
+      color: #4b3b5f;
     }
 
     .btn-danger {
