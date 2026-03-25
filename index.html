@@ -2622,7 +2622,12 @@ function toggleTheme() {
 }
 
     function renderAll() {
-  todayDateLabel.textContent = formatLongDateToday();
+      const todayDateLabel = document.getElementById("todayDateLabel");
+      
+      if (todayDateLabel) {
+        todayDateLabel.textContent = formatLongDateToday();
+      }
+      
   renderHero();
   renderTodayMeals();
   renderHistory();
