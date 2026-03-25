@@ -1669,10 +1669,13 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
 </head>
 <body>
   <div class="app">
+    
+    <div class="app-shell">
+     <aside class="global-sidebar">
    
 <div id="screenHome" class="screen active">
   <div class="home-desktop">
-    <aside class="home-sidebar">
+    <div class="home-sidebar">
       <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Abrir ou fechar painel">
         <i data-lucide="panel-left-close"></i>
         </button>
@@ -1711,7 +1714,10 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
   <span class="sidebar-text">Configurações</span>
 </button>
       </div>
-    </aside>
+    </div>
+  </aside>
+
+  <main class="app-content">
 
     <section class="home-main">
      <div class="card hero home-hero">
