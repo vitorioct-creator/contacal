@@ -792,6 +792,40 @@ body.dark-mode .food-list .selected {
   }
 }
 
+@media (max-width: 899px) {
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  #screenHome.screen.active {
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+
+  #screenHome.screen.active .home-desktop {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 16px;
+    display: block;
+    overflow: visible;
+  }
+
+  #screenHome.screen.active .home-main {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  #screenHome.screen.active .home-sidebar,
+  #screenHome.screen.active .home-right {
+    display: none;
+  }
+}
+
     body.dark-mode .calendar-day.today {
       border: 2px solid #ffd84d;
       box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.12);
