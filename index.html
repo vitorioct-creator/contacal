@@ -530,6 +530,21 @@ body.dark-mode .food-list .selected {
   color: var(--text);
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
+  
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-link i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.2;
+  flex-shrink: 0;
+}
+
+.sidebar-link span {
+  line-height: 1;
 }
 
 .sidebar-link:hover {
@@ -1390,6 +1405,23 @@ body.dark-mode .food-list .selected {
   background: #8e5cff;
   border-color: #7a44f0;
 }
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-link i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.2;
+  flex-shrink: 0;
+}
+
+.sidebar-link span {
+  line-height: 1;
+}
     
    .logo {
   width: 60px;
@@ -1428,11 +1460,30 @@ s
       </div>
 
       <div class="sidebar-menu">
-        <button class="sidebar-link" onclick="switchScreen('Hoje')">Hoje</button>
-        <button class="sidebar-link" onclick="switchScreen('Historico')">Histórico</button>
-        <button class="sidebar-link" onclick="switchScreen('Calendario')">Calendário</button>
-        <button class="sidebar-link" onclick="switchScreen('Evolucao')">Evolução</button>
-        <button class="sidebar-link" onclick="switchScreen('Config')">Configurações</button>
+        <button class="sidebar-link" onclick="switchScreen('Hoje')">
+  <i data-lucide="house"></i>
+  <span>Hoje</span>
+</button>
+
+<button class="sidebar-link" onclick="switchScreen('Historico')">
+  <i data-lucide="history"></i>
+  <span>Histórico</span>
+</button>
+
+<button class="sidebar-link" onclick="switchScreen('Calendario')">
+  <i data-lucide="calendar-days"></i>
+  <span>Calendário</span>
+</button>
+
+<button class="sidebar-link" onclick="switchScreen('Evolucao')">
+  <i data-lucide="chart-column"></i>
+  <span>Evolução</span>
+</button>
+
+<button class="sidebar-link" onclick="switchScreen('Config')">
+  <i data-lucide="settings-2"></i>
+  <span>Configurações</span>
+</button>
       </div>
     </aside>
 
@@ -2848,6 +2899,10 @@ function toggleTheme() {
   renderHomeStats();
   renderCircles();
   renderMiniChart();
+  
+  if (window.lucide) {
+  lucide.createIcons();
+}
 
   // 👇 AVATAR DINÂMICO
   const userGender = localStorage.getItem("gender") || "f";
@@ -3028,5 +3083,11 @@ function nextMonth() {
 
     window.deleteEntry = deleteEntry;
   </script>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
+
 </body>
 </html>
