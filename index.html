@@ -2507,33 +2507,34 @@ function toggleTheme() {
       : "avatar-masculino.png";
   }
 
-  // 👇 TEXTO DINÂMICO DO HERO
-  const heroTitle = document.getElementById("heroWelcomeTitle");
-  const heroSub = document.getElementById("heroWelcomeSub");
+const heroTitle = document.getElementById("heroWelcomeTitle");
+const heroSub = document.getElementById("heroWelcomeSub");
 
-  if (heroTitle && heroSub) {
-    const hour = new Date().getHours();
-    const today = getTodayTotal();
+if (heroTitle && heroSub) {
+  const hour = new Date().getHours();
+  const today = getTodayTotal();
+  const savedName = loadUserName();
+  const userName = savedName || "você";
 
-    let greeting;
-    if (hour < 12) greeting = "Bom dia";
-    else if (hour < 18) greeting = "Boa tarde";
-    else greeting = "Boa noite";
+  let greeting;
+  if (hour < 12) greeting = "Bom dia";
+  else if (hour < 18) greeting = "Boa tarde";
+  else greeting = "Boa noite";
 
-    let message;
-    if (today === 0) {
-      message = "Você ainda não registrou nada hoje";
-    } else if (today < dailyGoal * 0.5) {
-      message = "Você está começando bem o dia";
-    } else if (today < dailyGoal) {
-      message = "Tá indo bem, continua assim";
-    } else {
-      message = "Hoje passou da meta, amanhã ajusta";
-    }
-
-    heroTitle.textContent = `${greeting}, Tay`;
-    heroSub.textContent = message;
+  let message;
+  if (today === 0) {
+    message = "Você ainda não registrou nada hoje";
+  } else if (today < dailyGoal * 0.5) {
+    message = "Você está começando bem o dia";
+  } else if (today < dailyGoal) {
+    message = "Tá indo bem, continua assim";
+  } else {
+    message = "Hoje passou da meta, amanhã ajusta";
   }
+
+  heroTitle.textContent = `${greeting}, ${userName}`;
+  heroSub.textContent = message;
+}
 }
 
     function deleteEntry(id) {
