@@ -605,6 +605,12 @@ body.dark-mode .food-list .selected {
 }
 
     @media (min-width: 900px) {
+      body {
+        height: 100vh;
+        overflow: hidden;
+        }
+      }
+      
   .app {
   width: 100%;
   max-width: none;
@@ -624,11 +630,6 @@ body.dark-mode .food-list .selected {
   .subtitle {
     font-size: 18px;
   }
-  
-  #screenHome.screen.active {
-  display: flex;
-  justify-content: flex-start;
-}
 
   #screenHome.screen.active .home-right {
   display: block;
@@ -714,9 +715,8 @@ body.dark-mode .food-list .selected {
 }
 
 #screenHome.screen.active .home-main {
-  display: block;
   min-height: 0;
-  heigth: 100%;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 6px;
