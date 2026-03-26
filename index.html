@@ -2191,11 +2191,19 @@ body.sidebar-collapsed .sidebar-link:hover::after {
   <div class="field">
     <label class="label">Superávit</label>
     <select id="smartSurplusInput">
-      <option value="200">Leve (+200 kcal)</option>
-      <option value="300">Moderado (+300 kcal)</option>
-      <option value="400">Alto (+400 kcal)</option>
-    </select>
+      <option value="-400">Déficit alto (-400 kcal)</option>
+      <option value="-300">Déficit moderado (-300 kcal)</option>
+      <option value="-200">Déficit leve (-200 kcal)</option>
+      <option value="0">Manutenção (0 kcal)</option>
+      <option value="200">Superávit leve (+200 kcal)</option>
+      <option value="300">Superávit moderado (+300 kcal)</option>
+      <option value="400">Superávit alto (+400 kcal)</option>
+</select>
   </div>
+  
+  <div class="note" id="smartPlanHint" style="margin-bottom: 12px;">
+  O plano atual influencia a sugestão de ajuste calórico.
+</div>
 
   <button class="btn btn-primary" id="calculateSmartGoalBtn">Calcular meta inteligente</button>
 
@@ -2672,6 +2680,7 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     const goalModeSelect = document.getElementById("goalModeSelect");
     const manualGoalBox = document.getElementById("manualGoalBox");
     const smartGoalBox = document.getElementById("smartGoalBox");
+    const smartPlanHint = document.getElementById("smartPlanHint");
     
     const homePlanValue = document.getElementById("homePlanValue");
     const homePlanSub = document.getElementById("homePlanSub");
@@ -2727,17 +2736,20 @@ function getPlanMeta(plan) {
     "Bulking": {
       emoji: "🔥",
       subtitle: "Superávit focado em ganho",
-      suggestedSurplus: 300
+      suggestedAdjustment: 300,
+      label: "Superávit moderado"
     },
     "Cutting": {
       emoji: "🧊",
       subtitle: "Déficit focado em redução",
-      suggestedSurplus: -300
+      suggestedAdjustment: -300,
+      label: "Déficit moderado"
     },
     "Manutenção": {
       emoji: "⚖️",
       subtitle: "Equilíbrio e constância",
-      suggestedSurplus: 0
+      suggestedAdjustment: 0,
+      label: "Meta de manutenção"
     }
   };
 
@@ -2745,6 +2757,8 @@ function getPlanMeta(plan) {
 }
 
 function loadSmartGoalData() {
+  const defaultAdjustment = String(getPlanMeta(loadPlan()).suggestedAdjustment);
+
   try {
     return JSON.parse(localStorage.getItem(SMART_GOAL_DATA_KEY)) || {
       weight: "",
@@ -2752,7 +2766,7 @@ function loadSmartGoalData() {
       age: "",
       sex: "f",
       activity: "1.55",
-      surplus: "300"
+      surplus: defaultAdjustment
     };
   } catch {
     return {
@@ -2761,7 +2775,7 @@ function loadSmartGoalData() {
       age: "",
       sex: "f",
       activity: "1.55",
-      surplus: "300"
+      surplus: defaultAdjustment
     };
   }
 }
@@ -3431,11 +3445,18 @@ function updateCircle(id, textId, percent) {
       const tdee = bmr * activity;
       const suggestedGoal = Math.round(tdee + surplus);
 
-      smartGoalResult.innerHTML = `
-        <strong>TMB estimada:</strong> ${Math.round(bmr)} kcal/dia<br>
-        <strong>Gasto diário estimado:</strong> ${Math.round(tdee)} kcal/dia<br>
-        <strong>Meta ideal com superávit:</strong> ${suggestedGoal} kcal/dia
-      `;
+      const adjustmentLabel =
+  surplus > 0
+    ? `Meta com superávit`
+    : surplus < 0
+    ? `Meta com déficit`
+    : `Meta de manutenção`;
+
+smartGoalResult.innerHTML = `
+  <strong>TMB estimada:</strong> ${Math.round(bmr)} kcal/dia<br>
+  <strong>Gasto diário estimado:</strong> ${Math.round(tdee)} kcal/dia<br>
+  <strong>${adjustmentLabel}:</strong> ${suggestedGoal} kcal/dia
+`;
     } else {
       smartGoalResult.textContent = "Preencha seus dados para calcular sua meta ideal.";
     }
@@ -3466,6 +3487,11 @@ function toggleTheme() {
 
 function renderPlanUI() {
   const meta = getPlanMeta(currentPlan);
+  
+  if (smartPlanHint) {
+  const meta = getPlanMeta(currentPlan);
+  smartPlanHint.textContent = `Plano atual: ${currentPlan} ${meta.emoji} · ${meta.label}.`;
+}
 
   if (homePlanValue) {
     homePlanValue.textContent = `${currentPlan} ${meta.emoji}`;
@@ -3483,8 +3509,22 @@ function renderPlanUI() {
 function setPlan(plan) {
   currentPlan = plan;
   savePlan();
+
+  const meta = getPlanMeta(plan);
+
+  if (smartGoalData) {
+    smartGoalData.surplus = String(meta.suggestedAdjustment);
+    saveSmartGoalData();
+  }
+
+  if (typeof smartSurplusInput !== "undefined" && smartSurplusInput) {
+    smartSurplusInput.value = String(meta.suggestedAdjustment);
+  }
+
   renderPlanUI();
+  renderConfig();
   renderAll();
+
   alert(`Plano alterado para ${plan}.`);
 }
 
