@@ -1318,15 +1318,20 @@ body.dark-mode .food-list .selected {
 
   #screenHome.screen.active .home-desktop {
   width: 100%;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  display: block;
-  overflow: visible;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 24px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 24px;
+  align-items: start;
+  border-radius: 0;
   background: transparent;
+  backdrop-filter: none;
   box-shadow: none;
   border: none;
-  backdrop-filter: none;
+  overflow: hidden;
+  transition: grid-template-columns 0.35s ease;
 }
 
 #screenHoje .card,
