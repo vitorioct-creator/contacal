@@ -363,7 +363,7 @@ body.dark-mode .food-list .selected {
 
 .home-sidebar {
   display: none;
-  transition: width 0.35s eade, padding 0.35s ease;
+  transition: width 0.35s ease, padding 0.35s ease;
 }
 
 .home-main {
@@ -612,433 +612,7 @@ body.dark-mode .food-list .selected {
   color: var(--muted);
 }
 
-    @media (min-width: 900px) {
-      body {
-        height: 100vh;
-        overflow: hidden;
-        }
-        
-  .sidebar-toggle {
-  width: 42px;
-  height: 42px;
-  border: none;
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(151, 128, 207, 0.16);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
-  cursor: pointer;
-  color: #352754;
-  transition: 0.18s ease;
-}
-
-.sidebar-toggle:hover {
-  background: rgba(255,255,255,0.82);
-}
-
-.sidebar-toggle i {
-  width: 18px;
-  height: 18px;
-}
-
-.app-content .screen {
-  display: none;
-  width: 100%;
-  min-width: 0;
-}
-
-.app-content .screen.active {
-  display: block;
-}
-      
-  .app {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0 !important;
-}
-
-.app-shell {
-  display: grid;
-  grid-template-columns: 290px minmax(0, 1fr);
-  width: 100%;
-  height: 100vh;
-}
-
-.global-sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  z-index: 20;
-}
-
-.app-content {
-  min-width: 0;
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 24px 24px 24px 0;
-}
-
-  .topbar {
-    max-width: 980px;
-    margin: 20px auto 28px;
-  }
-
-  .title {
-    font-size: 42px;
-  }
-
-  .subtitle {
-    font-size: 18px;
-  }
-
-  #screenHome .home-right {
-  display: block;
-  position: sticky;
-  top: 24px;
-  height: calc(100vh - 48px);
-  padding-right: 24px;
-}
-
-  #screenHome.screen.active .home-desktop {
-  width: 100%;
-  height: 100vh;
-  margin: 0 !important;
-  padding: 0 24px 0 0;
-  display: grid;
-  grid-template-columns: 250px minmax(0, 1fr) 270px;
-  transition: grid-template-columns 0.35s ease;
-  gap: 24px;
-  align-items: start;
-  border-radius: 0;
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
-  border: none;
-  overflow: hidden;
-}
-
-#screenHoje .card,
-#screenHistorico .card,
-#screenCalendario .card,
-#screenEvolucao .card,
-#screenConfig .card {
-  max-width: 980px;
-  margin-left: 0;
-  margin-right: auto;
-}
-
-.home-sidebar {
-  display: block;
-  height: 100vh;
-  padding: 28px 22px;
-  background: linear-gradient(180deg, #f7f4ff 0%, #efe8ff 100%);
-  border: none;
-  border-right: 1px solid rgba(171, 149, 219, 0.18);
-  border-radius: 0 28px 28px 0;
-  box-shadow: 8px 0 24px rgba(118, 93, 173, 0.08);
-  overflow: visible;
-}
-
-#screenHome .home-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-bottom: 18px;
-}
-
-.sidebar-brand {
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(140, 120, 190, 0.16);
-  margin-bottom: 22px;
-}
-
-.sidebar-title {
-  color: #2f2149;
-}
-
-.sidebar-subtitle {
-  color: #6f5f8f;
-}
-
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  border-radius: 16px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  font-weight: 800;
-  color: #352754;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(151, 128, 207, 0.14);
-  transition: 0.18s ease;
-}
-
-.sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(183, 140, 255, 0.22);
-  transform: translateX(4px);
-  color: #352754;
-}
-
-.sidebar-link.active {
-  background: linear-gradient(135deg, #fff1a8, #f3ebff);
-  color: #2f2149;
-}
-
-.sidebar-link i {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-
-#screenHome.screen.active .home-hero {
-  min-height: 180px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-#screenHome.screen.active .home-grid .card {
-  min-height: 130px;
-  border-radius: 24px;
-}
-
-#screenHome.screen.active .home-action .btn {
-  min-height: 84px;
-  font-size: 20px;
-  border-radius: 20px;
-}
-
-#screenHome.screen.active .home-main {
-  display: block;
-  min-height: 0;
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 24px 0 24px 0;
-}
-
-#screenHome.screen.active .home-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-#screenHome.screen.active .home-action {
-  min-height: 130px;
-}
-
-#screenHome.screen.active .home-action-wide {
-  grid-column: 1 / -1;
-}
-
-  #screenHome.screen.active {
-  display: block;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-#screenHome.screen.active .card {
-  width: 100%;
-}
-
-#screenHome.screen.active .card.hero {
-  grid-column: 1 / -1;
-  min-height: 150px;
-}
-
-#screenHome.screen.active > .card:nth-of-type(2),
-#screenHome.screen.active > .card:nth-of-type(3),
-#screenHome.screen.active > .card:nth-of-type(4),
-#screenHome.screen.active > .card:nth-of-type(5),
-#screenHome.screen.active > .card:nth-of-type(6) {
-  min-height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#screenHoje.screen.active {
-  display:block;
-  max-width: 980px;
-  margin: 0 auto;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .home-desktop {
-  grid-template-columns: 96px minmax(0, 1fr) 270px;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .home-sidebar {
-  padding: 20px 12px;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-brand {
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-text {
-  display: none;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link {
-  justify-content: center;
-  padding: 14px 10px;
-  gap: 0;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link {
-  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link i {
-  transition: transform 0.18s ease, color 0.18s ease;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 0 0 1px rgba(183, 140, 255, 0.18),
-              0 8px 20px rgba(126, 90, 190, 0.16);
-  transform: translateY(-1px);
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover i {
-  transform: scale(1.12);
-  color: #7a57d1;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link i {
-  margin: 0;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-toggle {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link {
-  position: relative;
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link::after {
-  content: attr(data-label);
-  position: absolute;
-  left: 70px;
-  top: 50%;
-  transform: translateY(-50%) translateX(-6px);
-  
-  background: linear-gradient(135deg, #2a1f45, #1a1330);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 8px;
-
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.18s ease;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-}
-
-body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
-
-#screenHoje.screen.active .card {
-  width:100%;
-}
-
-  #screenCalendario .card,
-  #screenHistorico .card,
-  #screenConfig .card,
-  #screenEvolucao .card {
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .tabbar {
-    max-width: 720px;
-    bottom: 20px;
-  }
-}
-
-@media (max-width: 899px) {
-  body {
-    height: auto;
-    overflow: auto;
-  }
-
-  .app {
-    max-width: 460px;
-    margin: 0 auto;
-    padding: 18px 14px 24px;
-  }
-
-  #screenHome.screen.active {
-    display: block;
-    width: 100%;
-    margin: 0;
-    max-width: none;
-  }
-
-  #screenHome.screen.active .home-desktop {
-  width: 100%;
-  height: 100vh;
-  margin: 0 !important;
-  padding: 0 24px 0 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 270px;
-  gap: 24px;
-  align-items: start;
-  border-radius: 0;
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
-  border: none;
-  overflow: hidden;
-  transition: grid-template-columns 0.35s ease;
-}
-
-  #screenHome.screen.active .home-main {
-    display: block;
-    height: auto;
-    min-height: auto;
-    overflow: visible;
-    padding-right: 0;
-  }
-
-  #screenHome.screen.active .home-sidebar,
-  #screenHome.screen.active .home-right {
-    display: none;
-  }
-}
-
-    body.dark-mode .calendar-day.today {
-      border: 2px solid #ffd84d;
-      box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.12);
-}
-
-    body.dark-mode {
-      background:
-        radial-gradient(circle at top left, #3b2c0a 0%, transparent 28%),
-        radial-gradient(circle at top right, #2b1f42 0%, transparent 30%),
-        linear-gradient(180deg, #15121d 0%, #110f17 100%);
-}
-    * {
+* {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
@@ -1690,6 +1264,427 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
   height: 60px;
   animation: floatLogo 4s ease-in-out infinite;
 }
+
+    @media (min-width: 900px) {
+      body {
+        height: 100vh;
+        overflow: hidden;
+        }
+        
+  .sidebar-toggle {
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(151, 128, 207, 0.16);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  cursor: pointer;
+  color: #352754;
+  transition: 0.18s ease;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255,255,255,0.82);
+}
+
+.sidebar-toggle i {
+  width: 18px;
+  height: 18px;
+}
+
+.app-content .screen {
+  display: none;
+  width: 100%;
+  min-width: 0;
+}
+
+.app-content .screen.active {
+  display: block;
+}
+      
+  .app {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 !important;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  width: 100%;
+  height: 100vh;
+}
+
+.global-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 20;
+}
+
+.app-content {
+  min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 24px 24px 0;
+}
+
+  .topbar {
+    max-width: 980px;
+    margin: 20px auto 28px;
+  }
+
+  .title {
+    font-size: 42px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  #screenHome .home-right {
+  display: block;
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 48px);
+  padding-right: 24px;
+}
+
+  #screenHome.screen.active .home-desktop {
+  width: 100%;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 24px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  transition: grid-template-columns 0.35s ease;
+  gap: 24px;
+  align-items: start;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  border: none;
+  overflow: hidden;
+}
+
+#screenHoje .card,
+#screenHistorico .card,
+#screenCalendario .card,
+#screenEvolucao .card,
+#screenConfig .card {
+  max-width: 980px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.home-sidebar {
+  display: block;
+  height: 100vh;
+  padding: 28px 22px;
+  background: linear-gradient(180deg, #f7f4ff 0%, #efe8ff 100%);
+  border: none;
+  border-right: 1px solid rgba(171, 149, 219, 0.18);
+  border-radius: 0 28px 28px 0;
+  box-shadow: 8px 0 24px rgba(118, 93, 173, 0.08);
+  overflow: visible;
+}
+
+#screenHome .home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.sidebar-brand {
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(140, 120, 190, 0.16);
+  margin-bottom: 22px;
+}
+
+.sidebar-title {
+  color: #2f2149;
+}
+
+.sidebar-subtitle {
+  color: #6f5f8f;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  font-weight: 800;
+  color: #352754;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(151, 128, 207, 0.14);
+  transition: 0.18s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(183, 140, 255, 0.22);
+  transform: translateX(4px);
+  color: #352754;
+}
+
+.sidebar-link.active {
+  background: linear-gradient(135deg, #fff1a8, #f3ebff);
+  color: #2f2149;
+}
+
+.sidebar-link i {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+
+#screenHome.screen.active .home-hero {
+  min-height: 180px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+#screenHome.screen.active .home-grid .card {
+  min-height: 130px;
+  border-radius: 24px;
+}
+
+#screenHome.screen.active .home-action .btn {
+  min-height: 84px;
+  font-size: 20px;
+  border-radius: 20px;
+}
+
+#screenHome.screen.active .home-main {
+  display: block;
+  min-height: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 0 24px 0;
+}
+
+#screenHome.screen.active .home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+#screenHome.screen.active .home-action {
+  min-height: 130px;
+}
+
+#screenHome.screen.active .home-action-wide {
+  grid-column: 1 / -1;
+}
+
+  #screenHome.screen.active {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+#screenHome.screen.active .card {
+  width: 100%;
+}
+
+#screenHome.screen.active .card.hero {
+  grid-column: 1 / -1;
+  min-height: 150px;
+}
+
+#screenHome.screen.active > .card:nth-of-type(2),
+#screenHome.screen.active > .card:nth-of-type(3),
+#screenHome.screen.active > .card:nth-of-type(4),
+#screenHome.screen.active > .card:nth-of-type(5),
+#screenHome.screen.active > .card:nth-of-type(6) {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screenHoje.screen.active {
+  display:block;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+body.sidebar-collapsed .app-shell {
+  grid-template-columns: 96px minmax(0, 1fr);
+}
+
+body.sidebar-collapsed .home-sidebar {
+  padding: 20px 12px;
+}
+
+body.sidebar-collapsed .sidebar-brand {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+}
+
+body.sidebar-collapsed .sidebar-text {
+  display: none;
+}
+
+body.sidebar-collapsed .sidebar-link {
+  justify-content: center;
+  padding: 14px 10px;
+  gap: 0;
+}
+
+body.sidebar-collapsed .sidebar-link i {
+  margin: 0;
+}
+
+body.sidebar-collapsed .sidebar-toggle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.sidebar-collapsed .sidebar-link {
+  position: relative;
+}
+
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link {
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link i {
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 0 1px rgba(183, 140, 255, 0.18),
+              0 8px 20px rgba(126, 90, 190, 0.16);
+  transform: translateY(-1px);
+}
+
+body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover i {
+  transform: scale(1.12);
+  color: #7a57d1;
+}
+
+body.sidebar-collapsed .sidebar-link::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 70px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background: linear-gradient(135deg, #2a1f45, #1a1330);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.18s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  z-index: 999;
+}
+
+body.sidebar-collapsed .sidebar-link:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+#screenHoje.screen.active .card {
+  width:100%;
+}
+
+  #screenCalendario .card,
+  #screenHistorico .card,
+  #screenConfig .card,
+  #screenEvolucao .card {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tabbar {
+    max-width: 720px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 899px) {
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  .app {
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 18px 14px 24px;
+  }
+
+  #screenHome.screen.active {
+    display: block;
+    width: 100%;
+    margin: 0;
+    max-width: none;
+  }
+
+  #screenHome.screen.active .home-desktop {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  display: block;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  backdrop-filter: none;
+}
+
+  #screenHome.screen.active .home-main {
+    display: block;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  #screenHome.screen.active .home-sidebar,
+  #screenHome.screen.active .home-right {
+    display: none;
+  }
+}
+
+    body.dark-mode .calendar-day.today {
+      border: 2px solid #ffd84d;
+      box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.12);
+}
+
+    body.dark-mode {
+      background:
+        radial-gradient(circle at top left, #3b2c0a 0%, transparent 28%),
+        radial-gradient(circle at top right, #2b1f42 0%, transparent 30%),
+        linear-gradient(180deg, #15121d 0%, #110f17 100%);
+}
+    
 
       @keyframes fadeScreen {
   from {
