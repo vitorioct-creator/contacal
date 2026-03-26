@@ -160,13 +160,7 @@
       background: #352b48;
 }
 
-body.dark-mode {
-  background:
-    radial-gradient(circle at top left, #2f2450 0%, transparent 24%),
-    radial-gradient(circle at top right, #1f1635 0%, transparent 28%),
-    linear-gradient(180deg, #15121d 0%, #100d17 100%);
-  color: #f3ecff;
-}
+
 
 body.dark-mode #screenHome.screen.active .home-desktop {
   background: rgba(25, 20, 36, 0.82);
@@ -430,17 +424,6 @@ body.dark-mode .food-list .selected {
   filter: drop-shadow(0 18px 28px rgba(43, 35, 64, 0.22));
 }
 
-.home-hero::after {
-  content: "";
-  position: absolute;
-  right: 110px;
-  top: 18px;
-  width: 180px;
-  height: 180px;
-  background: rgba(255,255,255,0.10);
-  border-radius: 50%;
-}
-
 .home-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -524,24 +507,6 @@ body.dark-mode .food-list .selected {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.sidebar-link {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  border-radius: 14px;
-  padding: 14px 16px;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--text);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .sidebar-link i {
@@ -1242,11 +1207,6 @@ body.dark-mode .food-list .selected {
   border-color: #7a44f0;
 }
 
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 
 .sidebar-link i {
   width: 18px;
@@ -1657,13 +1617,6 @@ body.sidebar-collapsed .sidebar-link:hover::after {
       border: 2px solid #ffd84d;
       box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.12);
 }
-
-    body.dark-mode {
-      background:
-        radial-gradient(circle at top left, #3b2c0a 0%, transparent 28%),
-        radial-gradient(circle at top right, #2b1f42 0%, transparent 30%),
-        linear-gradient(180deg, #15121d 0%, #110f17 100%);
-}
     
 
       @keyframes fadeScreen {
@@ -1680,6 +1633,12 @@ body.sidebar-collapsed .sidebar-link:hover::after {
 .logo:hover {
   transform: scale(1.1) rotate(-5deg);
 }
+
+@keyframes floatLogo { 
+ 0%, 100% { transform: translateY(0); }
+ 50% { transform: translateY(-6px); }
+}
+
   </style>
 </head>
 <body>
@@ -2643,19 +2602,6 @@ function getOrAskUserName() {
         return;
       }
 
-      function updateCircle(id, percent) {
-       const circle = document.getElementById(id);
-        if (!circle) return;
-        
-       const text = circle.querySelector("span");
-
-       circle.style.background = `conic-gradient(#b78cff ${percent}%, #eee ${percent}%)`;
-
-        if (text) {
-        text.innerText = percent + "%";
-}
-      }
-
       const qty = Number(quantityInput.value) || 0;
       const measureIndex = Number(measureSelect.value || 0);
       const measure = selectedFood.measures[measureIndex];
@@ -3170,13 +3116,6 @@ function updateCircle(id, textId, percent) {
   }
 }
 
-function saveUserName(name) {
-  localStorage.setItem("userName", name);
-}
-
-function loadUserName() {
-  return localStorage.getItem("userName") || "";
-}
 
 function toggleTheme() {
   const isDark = document.body.classList.contains("dark-mode");
@@ -3248,7 +3187,7 @@ if (heroTitle && heroSub) {
   heroTitle.textContent = `${greeting}, ${userName}`;
   heroSub.textContent = message;
 }
-}
+
 
     function deleteEntry(id) {
       entries = entries.filter(item => item.id !== id);
