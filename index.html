@@ -695,7 +695,7 @@ body.dark-mode .food-list .selected {
     font-size: 18px;
   }
 
-  #screenHome.screen.active .home-right {
+  #screenHome .home-right {
   display: block;
   position: sticky;
   top: 24px;
@@ -743,7 +743,7 @@ body.dark-mode .food-list .selected {
   overflow: visible;
 }
 
-#screenHome.screen.active .home-stats {
+#screenHome .home-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
@@ -795,6 +795,7 @@ body.dark-mode .food-list .selected {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+}
 
 
 #screenHome.screen.active .home-hero {
@@ -803,6 +804,7 @@ body.dark-mode .food-list .selected {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 18px;
 }
 
 #screenHome.screen.active .home-grid .card {
@@ -823,10 +825,6 @@ body.dark-mode .food-list .selected {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 24px 0 24px 0;
-}
-
-#screenHome.screen.active .home-hero {
-  margin-bottom: 18px;
 }
 
 #screenHome.screen.active .home-grid {
@@ -998,17 +996,22 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
   }
 
   #screenHome.screen.active .home-desktop {
-    width: 100%;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    display: block;
-    overflow: visible;
-    background: transparent;
-    box-shadow: none;
-    border: none;
-    backdrop-filter: none;
-  }
+  width: 100%;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 24px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 24px;
+  align-items: start;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  border: none;
+  overflow: hidden;
+  transition: grid-template-columns 0.35s ease;
+}
 
   #screenHome.screen.active .home-main {
     display: block;
@@ -1706,56 +1709,60 @@ body.sidebar-collapsed #screenHome.screen.active .sidebar-link:hover::after {
 </head>
 <body>
   <div class="app">
-    
-    <div class="app-shell">
-     <aside class="global-sidebar">
-   
+  <div class="app-shell">
+
+    <aside class="global-sidebar">
+      <div class="home-sidebar">
+        <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Abrir ou fechar painel">
+          <i data-lucide="panel-left-close"></i>
+        </button>
+
+        <div class="sidebar-brand">
+          <img src="logo.png" class="logo" />
+          <div>
+            <div class="sidebar-title sidebar-text">ContaCal</div>
+            <div class="sidebar-subtitle sidebar-text">Seu painel</div>
+          </div>
+        </div>
+
+        <div class="sidebar-menu">
+  <button class="sidebar-link active" data-screen="Home" data-label="Home" onclick="switchScreen('Home')">
+    <i data-lucide="house"></i>
+    <span class="sidebar-text">Home</span>
+  </button>
+
+  <button class="sidebar-link" data-screen="Hoje" data-label="Hoje" onclick="switchScreen('Hoje')">
+    <i data-lucide="utensils-crossed"></i>
+    <span class="sidebar-text">Hoje</span>
+  </button>
+
+  <button class="sidebar-link" data-screen="Historico" data-label="Histórico" onclick="switchScreen('Historico')">
+    <i data-lucide="history"></i>
+    <span class="sidebar-text">Histórico</span>
+  </button>
+
+  <button class="sidebar-link" data-screen="Calendario" data-label="Calendário" onclick="switchScreen('Calendario')">
+    <i data-lucide="calendar-days"></i>
+    <span class="sidebar-text">Calendário</span>
+  </button>
+
+  <button class="sidebar-link" data-screen="Evolucao" data-label="Evolução" onclick="switchScreen('Evolucao')">
+    <i data-lucide="chart-column"></i>
+    <span class="sidebar-text">Evolução</span>
+  </button>
+
+  <button class="sidebar-link" data-screen="Config" data-label="Configurações" onclick="switchScreen('Config')">
+    <i data-lucide="settings-2"></i>
+    <span class="sidebar-text">Configurações</span>
+  </button>
+</div>
+      </div>
+    </aside>
+
+    <main class="app-content">
+
 <div id="screenHome" class="screen active">
   <div class="home-desktop">
-    <div class="home-sidebar">
-      <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Abrir ou fechar painel">
-        <i data-lucide="panel-left-close"></i>
-        </button>
-        
-      <div class="sidebar-brand">
-        <img src="logo.png" class="logo" />
-        <div>
-          <div class="sidebar-title sidebar-text">ContaCal</div>
-          <div class="sidebar-subtitle sidebar-text">Seu painel</div>
-        </div>
-      </div>
-
-      <div class="sidebar-menu">
-        <button class="sidebar-link" data-label="Hoje" onclick="showScreen('home')">
-  <i data-lucide="home"></i>
-  <span class="sidebar-text">Hoje</span>
-</button>
-
-<button class="sidebar-link" data-label="Histórico" onclick="showScreen('history')">
-  <i data-lucide="history"></i>
-  <span class="sidebar-text">Histórico</span>
-</button>
-
-<button class="sidebar-link" data-label="Calendário" onclick="showScreen('calendar')">
-  <i data-lucide="calendar"></i>
-  <span class="sidebar-text">Calendário</span>
-</button>
-
-<button class="sidebar-link" data-label="Evolução" onclick="showScreen('evolution')">
-  <i data-lucide="activity"></i>
-  <span class="sidebar-text">Evolução</span>
-</button>
-
-<button class="sidebar-link" data-label="Configurações" onclick="showScreen('config')">
-  <i data-lucide="settings"></i>
-  <span class="sidebar-text">Configurações</span>
-</button>
-      </div>
-    </div>
-  </aside>
-
-  <main class="app-content">
-
     <section class="home-main">
      <div class="card hero home-hero">
        <div class="hero-text">
@@ -3225,6 +3232,7 @@ function toggleTheme() {
   
   if (window.lucide) {
   lucide.createIcons();
+ }
 }
 
   // 👇 AVATAR DINÂMICO
@@ -3368,22 +3376,17 @@ function nextMonth() {
     link.classList.remove("active");
   });
 
-  if (screenName === "Hoje") {
-    document.getElementById("screenHoje").classList.add("active");
-  } else if (screenName === "Historico") {
-    document.getElementById("screenHistorico").classList.add("active");
-  } else if (screenName === "Config") {
-    document.getElementById("screenConfig").classList.add("active");
-  } else if (screenName === "Evolucao") {
-    document.getElementById("screenEvolucao").classList.add("active");
-  } else if (screenName === "Calendario") {
-    document.getElementById("screenCalendario").classList.add("active");
-  } else if (screenName === "Home") {
-    document.getElementById("screenHome").classList.add("active");
+  const target = document.getElementById(`screen${screenName}`);
+  if (target) {
+    target.classList.add("active");
   }
 
   document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
   document.querySelector(`.sidebar-link[data-screen="${screenName}"]`)?.classList.add("active");
+
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 }
 
     foodSearch.addEventListener("input", () => {
@@ -3411,6 +3414,12 @@ function nextMonth() {
         switchScreen(btn.dataset.screen);
       });
     });
+    
+    const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
+
+if (sidebarToggleBtn) {
+  sidebarToggleBtn.addEventListener("click", toggleSidebar);
+}
 
     applyTheme(loadTheme());
     renderAll();
