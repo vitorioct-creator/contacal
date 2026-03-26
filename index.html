@@ -1358,13 +1358,13 @@ body.dark-mode .food-list .selected {
   display: block;
   position: sticky;
   top: 16px;
-  height: calc(100vh - 32px);
+  align-self: start;
   padding-right: 16px;
 }
 
   #screenHome.screen.active .home-desktop {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 !important;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 270px;
@@ -1374,7 +1374,7 @@ body.dark-mode .food-list .selected {
   background: transparent;
   box-shadow: none;
   border: none;
-  overflow: hidden;
+  overflow: visible;
   transition: grid-template-columns 0.35s ease;
 }
 
@@ -1482,10 +1482,9 @@ body.dark-mode .food-list .selected {
 
 #screenHome.screen.active .home-main {
   display: block;
-  min-height: 0;
+  min-height: 100vh;
   height: auto;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
   padding: 24px 0 24px 0;
 }
 
