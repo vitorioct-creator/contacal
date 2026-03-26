@@ -3333,15 +3333,10 @@ function nextMonth() {
         switchScreen(btn.dataset.screen);
       });
     });
-    
-    const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
-
-if (sidebarToggleBtn) {
-  sidebarToggleBtn.addEventListener("click", toggleSidebar);
-}
 
     applyTheme(loadTheme());
     renderAll();
+    switchScreen("Home");
     applySidebarState();
 
     window.deleteEntry = deleteEntry;
