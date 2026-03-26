@@ -1685,6 +1685,16 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     overflow: visible;
     padding-right: 0;
   }
+  
+  #homePlanCard {
+  margin-bottom: 18px;
+}
+
+#homePlanCard .stat-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
   #screenHome.screen.active .home-sidebar,
   #screenHome.screen.active .home-right {
@@ -1763,6 +1773,11 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     <i data-lucide="chart-column"></i>
     <span class="sidebar-text">Evolução</span>
   </button>
+  
+  <button class="sidebar-link" data-screen="Plano" data-label="Plano" onclick="switchScreen('Plano')">
+  <i data-lucide="target"></i>
+  <span class="sidebar-text">Plano</span>
+</button>
 
   <button class="sidebar-link" data-screen="Config" data-label="Configurações" onclick="switchScreen('Config')">
     <i data-lucide="settings-2"></i>
@@ -1805,6 +1820,12 @@ body.sidebar-collapsed .sidebar-link:hover::after {
   </div>
 </div>
 
+  <div class="card" id="homePlanCard">
+    <div class="stat-label">Plano atual</div>
+    <div class="stat-value" id="homePlanValue">Bulking</div>
+    <div class="note" id="homePlanSub">Superávit focado em ganho</div>
+</div>
+
       <div class="home-grid">
         <div class="card home-action">
           <button class="btn btn-primary" onclick="switchScreen('Hoje')">
@@ -1829,6 +1850,12 @@ body.sidebar-collapsed .sidebar-link:hover::after {
             Ver evolução
           </button>
         </div>
+        
+        <div class="card home-action">
+          <button class="btn btn-secondary" onclick="switchScreen('Plano')">
+            Trocar plano
+          </button>
+         </div>
 
         <div class="card home-action home-action-wide">
           <button class="btn btn-secondary" onclick="switchScreen('Config')">
@@ -2057,6 +2084,42 @@ body.sidebar-collapsed .sidebar-link:hover::after {
       <canvas id="evolutionChart"></canvas>
   </div>
 </div>
+</div>
+
+   <div id="screenPlano" class="screen">
+  <div class="card">
+    <button class="btn btn-secondary" onclick="switchScreen('Home')">
+      ← Voltar para Home
+    </button>
+  </div>
+
+  <div class="card hero">
+    <div class="section-title">Escolher plano</div>
+    <div class="note">
+      Escolha o objetivo principal do seu momento. Isso muda a identidade do app e pode orientar sua meta.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Plano atual</div>
+    <div class="note" id="currentPlanSummary">Bulking 🔥</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Opções</div>
+
+    <button class="btn btn-secondary" id="chooseBulkingBtn" style="margin-bottom: 10px;">
+      Bulking 🔥
+    </button>
+
+    <button class="btn btn-secondary" id="chooseCuttingBtn" style="margin-bottom: 10px;">
+      Cutting 🧊
+    </button>
+
+    <button class="btn btn-secondary" id="chooseMaintenanceBtn">
+      Manutenção ⚖️
+    </button>
+  </div>
 </div>
 
 
@@ -2574,6 +2637,7 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     const USER_NAME_KEY = "contacal_user_name_v1";
     const GOAL_MODE_KEY = "contacal_goal_mode_v1";
     const SMART_GOAL_DATA_KEY = "contacal_smart_goal_data_v1";
+    const PLAN_KEY = "contacal_plan_v1";
 
     let selectedFood = null;
     let entries = loadEntries();
@@ -2582,6 +2646,7 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     let smartGoalData = loadSmartGoalData();
     let evolutionChartInstance = null;
     let currentCalendarDate = new Date();
+    let currentPlan = loadPlan();
 
     const foodSearch = document.getElementById("foodSearch");
     const searchResults = document.getElementById("searchResults");
@@ -2608,6 +2673,14 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     const goalModeSelect = document.getElementById("goalModeSelect");
     const manualGoalBox = document.getElementById("manualGoalBox");
     const smartGoalBox = document.getElementById("smartGoalBox");
+    
+    const homePlanValue = document.getElementById("homePlanValue");
+    const homePlanSub = document.getElementById("homePlanSub");
+    const currentPlanSummary = document.getElementById("currentPlanSummary");
+
+    const chooseBulkingBtn = document.getElementById("chooseBulkingBtn");
+    const chooseCuttingBtn = document.getElementById("chooseCuttingBtn");
+    const chooseMaintenanceBtn = document.getElementById("chooseMaintenanceBtn");
 
     const smartWeightInput = document.getElementById("smartWeightInput");
     const smartHeightInput = document.getElementById("smartHeightInput");
@@ -2640,6 +2713,36 @@ body.sidebar-collapsed .sidebar-link:hover::after {
 
 function saveGoalMode() {
   localStorage.setItem(GOAL_MODE_KEY, goalMode);
+}
+
+function loadPlan() {
+  return localStorage.getItem(PLAN_KEY) || "Bulking";
+}
+
+function savePlan() {
+  localStorage.setItem(PLAN_KEY, currentPlan);
+}
+
+function getPlanMeta(plan) {
+  const metas = {
+    "Bulking": {
+      emoji: "🔥",
+      subtitle: "Superávit focado em ganho",
+      suggestedSurplus: 300
+    },
+    "Cutting": {
+      emoji: "🧊",
+      subtitle: "Déficit focado em redução",
+      suggestedSurplus: -300
+    },
+    "Manutenção": {
+      emoji: "⚖️",
+      subtitle: "Equilíbrio e constância",
+      suggestedSurplus: 0
+    }
+  };
+
+  return metas[plan] || metas["Bulking"];
 }
 
 function loadSmartGoalData() {
@@ -3362,6 +3465,30 @@ function toggleTheme() {
   applyTheme(nextTheme);
 }
 
+function renderPlanUI() {
+  const meta = getPlanMeta(currentPlan);
+
+  if (homePlanValue) {
+    homePlanValue.textContent = `${currentPlan} ${meta.emoji}`;
+  }
+
+  if (homePlanSub) {
+    homePlanSub.textContent = meta.subtitle;
+  }
+
+  if (currentPlanSummary) {
+    currentPlanSummary.textContent = `${currentPlan} ${meta.emoji} · ${meta.subtitle}`;
+  }
+}
+
+function setPlan(plan) {
+  currentPlan = plan;
+  savePlan();
+  renderPlanUI();
+  renderAll();
+  alert(`Plano alterado para ${plan}.`);
+}
+
     function renderAll() {
       const todayDateLabel = document.getElementById("todayDateLabel");
       
@@ -3379,6 +3506,7 @@ function toggleTheme() {
   renderHomeStats();
   renderCircles();
   renderMiniChart();
+  renderPlanUI();
   
   applySidebarState();
   
@@ -3712,6 +3840,18 @@ function importDataFromFile(file) {
 document.getElementById("addFoodBtn").addEventListener("click", addSelectedFood);
 document.getElementById("addManualBtn").addEventListener("click", addManualFood);
 document.getElementById("saveGoalBtn").addEventListener("click", saveGoalFromInput);
+
+if (chooseBulkingBtn) {
+  chooseBulkingBtn.addEventListener("click", () => setPlan("Bulking"));
+}
+
+if (chooseCuttingBtn) {
+  chooseCuttingBtn.addEventListener("click", () => setPlan("Cutting"));
+}
+
+if (chooseMaintenanceBtn) {
+  chooseMaintenanceBtn.addEventListener("click", () => setPlan("Manutenção"));
+}
 
 if (goalModeSelect) {
   goalModeSelect.addEventListener("change", () => {
