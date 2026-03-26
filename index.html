@@ -502,6 +502,35 @@ body.dark-mode .food-list .selected {
   padding: 20px;
 }
 
+.home-stats.animate-in .stat-card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: statCardIn 0.35s ease forwards;
+}
+
+.home-stats.animate-in .stat-card:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.home-stats.animate-in .stat-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.home-stats.animate-in .stat-card:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+@keyframes statCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .stat-label {
   font-size: 13px;
   font-weight: 800;
@@ -1064,7 +1093,8 @@ body.dark-mode .food-list .selected {
 
     .screen.active {
       display: block;
-      animation: fadeScreen 0.22s ease;
+      animation: fadeScreen 0.24s ease;
+      will-change: opacity, transform;
       max-width: 1100px;
       margin: 0 auto;
       width: 100%;
@@ -1710,7 +1740,7 @@ body.sidebar-collapsed .sidebar-link:hover::after {
       @keyframes fadeScreen {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -3241,9 +3271,10 @@ function updateCircle(id, textId, percent) {
 
   const goalDaysCount = Object.keys(groupedByDate).filter(date => groupedByDate[date] >= dailyGoal).length;
 
-  homeTodayKcal.textContent = `${todayTotal} kcal`;
-  homeGoalValue.textContent = `${dailyGoal} kcal`;
-  homeGoalDays.textContent = `${goalDaysCount} ${goalDaysCount === 1 ? "dia" : "dias"}`;
+  animateNumber(homeTodayKcal, todayTotal, " kcal");
+  animateNumber(homeGoalValue, dailyGoal, " kcal");
+  animateNumber(homeGoalDays, goalDaysCount, " dias");
+  animateHomeStats();
 }
 
     function renderTodayMeals() {
@@ -3475,6 +3506,42 @@ smartGoalResult.innerHTML = `
      } else {
        document.body.classList.remove("dark-mode");
   }
+}
+
+function animateHomeStats() {
+  const homeStats = document.querySelector(".home-stats");
+  if (!homeStats) return;
+
+  homeStats.classList.remove("animate-in");
+
+  // força reflow pra reiniciar a animação
+  void homeStats.offsetWidth;
+
+  homeStats.classList.add("animate-in");
+}
+
+function animateNumber(element, finalValue, suffix = "", duration = 700) {
+  if (!element) return;
+
+  const start = 0;
+  const end = Number(finalValue) || 0;
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const currentValue = Math.round(start + (end - start) * eased);
+
+    element.textContent = `${currentValue}${suffix}`;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  requestAnimationFrame(update);
 }
 
 
@@ -3854,6 +3921,12 @@ function importDataFromFile(file) {
   if (target) {
     target.classList.add("active");
   }
+  
+  if (screenName === "Home") {
+  setTimeout(() => {
+    renderHomeStats();
+  }, 30);
+}
 
   document.querySelector(`.tab-btn[data-screen="${screenName}"]`)?.classList.add("active");
   document.querySelector(`.sidebar-link[data-screen="${screenName}"]`)?.classList.add("active");
