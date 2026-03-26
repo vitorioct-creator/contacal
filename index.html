@@ -594,28 +594,13 @@ body.dark-mode .food-list .selected {
       padding-bottom: 100px;
     }
     
-    .app-shell {
-  display: flex;
-  gap: 24px;
-  max-width: 1320px;
+  .app-shell {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  width: min(1320px, 100%);
   margin: 0 auto;
-  padding: 24px;
-  align-items: flex-start;
-}
-
-.sidebar {
-  width: 92px;
-  flex-shrink: 0;
-}
-
-.main-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.progress-panel {
-  width: 260px;
-  flex-shrink: 0;
+  height: 100vh;
+  column-gap: 24px;
 }
 
     .app {
