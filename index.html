@@ -2097,10 +2097,26 @@ body.sidebar-collapsed .sidebar-link:hover::after {
       </div>
 
       <div class="card">
-        <div class="section-title">Dados</div>
-        <button class="btn btn-danger" id="clearTodayBtn" style="margin-bottom: 10px;">Limpar somente hoje</button>
-        <button class="btn btn-danger" id="clearAllBtn">Apagar tudo</button>
-      </div>
+  <div class="section-title">Dados</div>
+
+  <button class="btn btn-secondary" id="exportDataBtn" style="margin-bottom: 10px;">
+    Exportar backup
+  </button>
+
+  <button class="btn btn-secondary" id="importDataBtn" style="margin-bottom: 10px;">
+    Importar backup
+  </button>
+
+  <input type="file" id="importFileInput" accept=".json,application/json" style="display: none;" />
+
+  <button class="btn btn-danger" id="clearTodayBtn" style="margin-bottom: 10px;">
+    Limpar somente hoje
+  </button>
+
+  <button class="btn btn-danger" id="clearAllBtn">
+    Apagar tudo
+  </button>
+</div>
     </div>
       </main>
 </div>
@@ -3346,6 +3362,82 @@ function nextMonth() {
       renderAll();
       alert("Os registros de hoje foram apagados.");
     }
+    
+    function exportData() {
+  const backup = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    entries,
+    dailyGoal,
+    theme: loadTheme(),
+    userName: loadUserName()
+  };
+
+  const fileContent = JSON.stringify(backup, null, 2);
+  const blob = new Blob([fileContent], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `contacal-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+}
+
+function importDataFromFile(file) {
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    try {
+      const imported = JSON.parse(event.target.result);
+
+      if (!imported || typeof imported !== "object") {
+        throw new Error("Arquivo inválido.");
+      }
+
+      if (!Array.isArray(imported.entries)) {
+        throw new Error("O backup não tem uma lista válida de registros.");
+      }
+
+      const ok = confirm(
+        "Importar este backup vai substituir os dados atuais do app. Quer continuar?"
+      );
+      if (!ok) return;
+
+      entries = imported.entries;
+
+      if (typeof imported.dailyGoal === "number" && imported.dailyGoal > 0) {
+        dailyGoal = Math.round(imported.dailyGoal);
+      }
+
+      if (typeof imported.userName === "string") {
+        saveUserName(imported.userName);
+      }
+
+      if (imported.theme === "dark" || imported.theme === "light") {
+        localStorage.setItem(THEME_KEY, imported.theme);
+        applyTheme(imported.theme);
+      }
+
+      saveEntries();
+      saveGoal();
+      renderAll();
+      switchScreen("Home");
+
+      alert("Backup importado com sucesso.");
+    } catch (error) {
+      alert("Não consegui importar esse arquivo. Verifica se ele é um backup válido do ContaCal.");
+      console.error(error);
+    }
+  };
+
+  reader.readAsText(file);
+}
 
     function clearAll() {
       const ok = confirm("Apagar tudo mesmo? Histórico inteiro, sem drama depois.");
@@ -3396,11 +3488,23 @@ function nextMonth() {
     measureSelect.addEventListener("change", updatePreview);
 
     document.getElementById("addFoodBtn").addEventListener("click", addSelectedFood);
-    document.getElementById("addManualBtn").addEventListener("click", addManualFood);
-    document.getElementById("saveGoalBtn").addEventListener("click", saveGoalFromInput);
-    document.getElementById("clearTodayBtn").addEventListener("click", clearToday);
-    document.getElementById("clearAllBtn").addEventListener("click", clearAll);
-    document.getElementById("toggleThemeBtn").addEventListener("click", toggleTheme);
+document.getElementById("addManualBtn").addEventListener("click", addManualFood);
+document.getElementById("saveGoalBtn").addEventListener("click", saveGoalFromInput);
+document.getElementById("clearTodayBtn").addEventListener("click", clearToday);
+document.getElementById("clearAllBtn").addEventListener("click", clearAll);
+document.getElementById("toggleThemeBtn").addEventListener("click", toggleTheme);
+
+document.getElementById("exportDataBtn").addEventListener("click", exportData);
+
+document.getElementById("importDataBtn").addEventListener("click", () => {
+  document.getElementById("importFileInput").click();
+});
+
+document.getElementById("importFileInput").addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  importDataFromFile(file);
+  event.target.value = "";
+});
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
