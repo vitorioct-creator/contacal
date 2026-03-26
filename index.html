@@ -2071,11 +2071,76 @@ body.sidebar-collapsed .sidebar-link:hover::after {
         <div class="settings-box">
           
           <div class="field">
-            <label class="label">Meta calórica diária</label>
-            <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
-          </div>
-          
-          <button class="btn btn-primary" id="saveGoalBtn">Salvar meta</button>
+  <label class="label">Modo da meta</label>
+  <select id="goalModeSelect">
+    <option value="manual">Meta manual</option>
+    <option value="smart">Meta inteligente</option>
+  </select>
+</div>
+
+<div id="manualGoalBox">
+  <div class="field">
+    <label class="label">Meta calórica diária</label>
+    <input id="goalInput" type="number" min="0" step="1" placeholder="Ex: 1800" />
+  </div>
+
+  <button class="btn btn-primary" id="saveGoalBtn">Salvar meta manual</button>
+</div>
+
+<div id="smartGoalBox" style="display: none;">
+  <div class="field">
+    <label class="label">Peso (kg)</label>
+    <input id="smartWeightInput" type="number" min="0" step="0.1" placeholder="Ex: 52.5" />
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label class="label">Altura (cm)</label>
+      <input id="smartHeightInput" type="number" min="0" step="1" placeholder="Ex: 160" />
+    </div>
+
+    <div class="field">
+      <label class="label">Idade</label>
+      <input id="smartAgeInput" type="number" min="0" step="1" placeholder="Ex: 19" />
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label class="label">Sexo</label>
+      <select id="smartSexInput">
+        <option value="f">Feminino</option>
+        <option value="m">Masculino</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="label">Atividade</label>
+      <select id="smartActivityInput">
+        <option value="1.2">Sedentária</option>
+        <option value="1.375">Levemente ativa</option>
+        <option value="1.55">Moderadamente ativa</option>
+        <option value="1.725">Muito ativa</option>
+        <option value="1.9">Extremamente ativa</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Superávit</label>
+    <select id="smartSurplusInput">
+      <option value="200">Leve (+200 kcal)</option>
+      <option value="300">Moderado (+300 kcal)</option>
+      <option value="400">Alto (+400 kcal)</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary" id="calculateSmartGoalBtn">Calcular meta inteligente</button>
+
+  <div class="note" id="smartGoalResult" style="margin-top: 12px;">
+    Preencha seus dados para calcular sua meta ideal.
+  </div>
+</div>
           <div class="field">
             <label class="label">Seu nome</label>
             <input id="userNameInput" type="text" placeholder="Ex: Tay" />
@@ -2507,10 +2572,14 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     const GOAL_KEY = "contacal_goal_v2";
     const THEME_KEY = "contacal_theme_v1";
     const USER_NAME_KEY = "contacal_user_name_v1";
+    const GOAL_MODE_KEY = "contacal_goal_mode_v1";
+    const SMART_GOAL_DATA_KEY = "contacal_smart_goal_data_v1";
 
     let selectedFood = null;
     let entries = loadEntries();
     let dailyGoal = loadGoal();
+    let goalMode = loadGoalMode();
+    let smartGoalData = loadSmartGoalData();
     let evolutionChartInstance = null;
     let currentCalendarDate = new Date();
 
@@ -2536,6 +2605,18 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     const homeTodayKcal = document.getElementById("homeTodayKcal");
     const homeGoalValue = document.getElementById("homeGoalValue");
     const homeGoalDays = document.getElementById("homeGoalDays");
+    const goalModeSelect = document.getElementById("goalModeSelect");
+    const manualGoalBox = document.getElementById("manualGoalBox");
+    const smartGoalBox = document.getElementById("smartGoalBox");
+
+    const smartWeightInput = document.getElementById("smartWeightInput");
+    const smartHeightInput = document.getElementById("smartHeightInput");
+    const smartAgeInput = document.getElementById("smartAgeInput");
+    const smartSexInput = document.getElementById("smartSexInput");
+    const smartActivityInput = document.getElementById("smartActivityInput");
+    const smartSurplusInput = document.getElementById("smartSurplusInput");
+    const calculateSmartGoalBtn = document.getElementById("calculateSmartGoalBtn");
+    const smartGoalResult = document.getElementById("smartGoalResult");
 
     function loadEntries() {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -2552,6 +2633,40 @@ body.sidebar-collapsed .sidebar-link:hover::after {
     function saveGoal() {
       localStorage.setItem(GOAL_KEY, String(dailyGoal));
     }
+    
+    function loadGoalMode() {
+  return localStorage.getItem(GOAL_MODE_KEY) || "manual";
+}
+
+function saveGoalMode() {
+  localStorage.setItem(GOAL_MODE_KEY, goalMode);
+}
+
+function loadSmartGoalData() {
+  try {
+    return JSON.parse(localStorage.getItem(SMART_GOAL_DATA_KEY)) || {
+      weight: "",
+      height: "",
+      age: "",
+      sex: "f",
+      activity: "1.55",
+      surplus: "300"
+    };
+  } catch {
+    return {
+      weight: "",
+      height: "",
+      age: "",
+      sex: "f",
+      activity: "1.55",
+      surplus: "300"
+    };
+  }
+}
+
+function saveSmartGoalData() {
+  localStorage.setItem(SMART_GOAL_DATA_KEY, JSON.stringify(smartGoalData));
+}
 
     function getTodayKey() {
       const now = new Date();
@@ -3190,14 +3305,42 @@ function updateCircle(id, textId, percent) {
 }
 
     function renderConfig() {
-      goalInput.value = dailyGoal;
-      
-      const userNameInput = document.getElementById("userNameInput");
+  if (goalInput) {
+    goalInput.value = dailyGoal;
+  }
 
-      if (userNameInput) {
-         userNameInput.value = loadUserName();
-      }
+  if (userNameInput) {
+    userNameInput.value = loadUserName();
+  }
+
+  fillSmartGoalFields();
+  updateGoalModeUI();
+
+  if (smartGoalResult && goalMode === "smart") {
+    const weight = Number(smartGoalData.weight);
+    const height = Number(smartGoalData.height);
+    const age = Number(smartGoalData.age);
+    const sex = smartGoalData.sex;
+    const activity = Number(smartGoalData.activity);
+    const surplus = Number(smartGoalData.surplus);
+
+    if (weight && height && age) {
+      const bmr = calculateBMR({ weight, height, age, sex });
+      const tdee = bmr * activity;
+      const suggestedGoal = Math.round(tdee + surplus);
+
+      smartGoalResult.innerHTML = `
+        <strong>TMB estimada:</strong> ${Math.round(bmr)} kcal/dia<br>
+        <strong>Gasto diário estimado:</strong> ${Math.round(tdee)} kcal/dia<br>
+        <strong>Meta ideal com superávit:</strong> ${suggestedGoal} kcal/dia
+      `;
+    } else {
+      smartGoalResult.textContent = "Preencha seus dados para calcular sua meta ideal.";
     }
+  } else if (smartGoalResult) {
+    smartGoalResult.textContent = "Preencha seus dados para calcular sua meta ideal.";
+  }
+}
 
     function loadTheme() {
      return localStorage.getItem(THEME_KEY) || "light";
@@ -3326,16 +3469,95 @@ if (saveUserNameBtn) {
 }
     
     function saveGoalFromInput() {
-      const value = Number(goalInput.value);
-      if (!value || value <= 0) {
-        alert("Coloca uma meta válida.");
-        return;
-      }
-      dailyGoal = Math.round(value);
-      saveGoal();
-      renderAll();
-      alert("Meta salva.");
-    }
+  const value = Number(goalInput.value);
+  if (!value || value <= 0) {
+    alert("Coloca uma meta válida.");
+    return;
+  }
+
+  goalMode = "manual";
+  saveGoalMode();
+
+  dailyGoal = Math.round(value);
+  saveGoal();
+
+  updateGoalModeUI();
+  renderAll();
+  alert("Meta manual salva.");
+}
+    
+    function calculateBMR({ weight, height, age, sex }) {
+  if (sex === "m") {
+    return 10 * weight + 6.25 * height - 5 * age + 5;
+  }
+  return 10 * weight + 6.25 * height - 5 * age - 161;
+}
+
+function updateGoalModeUI() {
+  if (!goalModeSelect || !manualGoalBox || !smartGoalBox) return;
+
+  goalModeSelect.value = goalMode;
+  manualGoalBox.style.display = goalMode === "manual" ? "block" : "none";
+  smartGoalBox.style.display = goalMode === "smart" ? "block" : "none";
+}
+
+function fillSmartGoalFields() {
+  if (!smartWeightInput) return;
+
+  smartWeightInput.value = smartGoalData.weight || "";
+  smartHeightInput.value = smartGoalData.height || "";
+  smartAgeInput.value = smartGoalData.age || "";
+  smartSexInput.value = smartGoalData.sex || "f";
+  smartActivityInput.value = smartGoalData.activity || "1.55";
+  smartSurplusInput.value = smartGoalData.surplus || "300";
+}
+
+function calculateSmartGoal() {
+  const weight = Number(smartWeightInput.value);
+  const height = Number(smartHeightInput.value);
+  const age = Number(smartAgeInput.value);
+  const sex = smartSexInput.value;
+  const activity = Number(smartActivityInput.value);
+  const surplus = Number(smartSurplusInput.value);
+
+  if (!weight || !height || !age || weight <= 0 || height <= 0 || age <= 0) {
+    alert("Preencha peso, altura e idade com valores válidos.");
+    return;
+  }
+
+  const bmr = calculateBMR({ weight, height, age, sex });
+  const tdee = bmr * activity;
+  const suggestedGoal = Math.round(tdee + surplus);
+
+  smartGoalData = {
+    weight: String(weight),
+    height: String(height),
+    age: String(age),
+    sex,
+    activity: String(activity),
+    surplus: String(surplus)
+  };
+
+  saveSmartGoalData();
+
+  goalMode = "smart";
+  saveGoalMode();
+
+  dailyGoal = suggestedGoal;
+  saveGoal();
+
+  if (smartGoalResult) {
+    smartGoalResult.innerHTML = `
+      <strong>TMB estimada:</strong> ${Math.round(bmr)} kcal/dia<br>
+      <strong>Gasto diário estimado:</strong> ${Math.round(tdee)} kcal/dia<br>
+      <strong>Meta ideal com superávit:</strong> ${suggestedGoal} kcal/dia
+    `;
+  }
+
+  updateGoalModeUI();
+  renderAll();
+  alert("Meta inteligente calculada e salva.");
+}
     
     function prevMonth() {
   currentCalendarDate = new Date(
@@ -3487,17 +3709,28 @@ function importDataFromFile(file) {
     quantityInput.addEventListener("input", updatePreview);
     measureSelect.addEventListener("change", updatePreview);
 
-    document.getElementById("addFoodBtn").addEventListener("click", addSelectedFood);
+document.getElementById("addFoodBtn").addEventListener("click", addSelectedFood);
 document.getElementById("addManualBtn").addEventListener("click", addManualFood);
 document.getElementById("saveGoalBtn").addEventListener("click", saveGoalFromInput);
+
+if (goalModeSelect) {
+  goalModeSelect.addEventListener("change", () => {
+    goalMode = goalModeSelect.value;
+    saveGoalMode();
+    updateGoalModeUI();
+  });
+}
+
+if (calculateSmartGoalBtn) {
+  calculateSmartGoalBtn.addEventListener("click", calculateSmartGoal);
+}
+
 document.getElementById("clearTodayBtn").addEventListener("click", clearToday);
 document.getElementById("clearAllBtn").addEventListener("click", clearAll);
 document.getElementById("toggleThemeBtn").addEventListener("click", toggleTheme);
-
 document.getElementById("exportDataBtn").addEventListener("click", exportData);
-
 document.getElementById("importDataBtn").addEventListener("click", () => {
-  document.getElementById("importFileInput").click();
+document.getElementById("importFileInput").click();
 });
 
 document.getElementById("importFileInput").addEventListener("change", (event) => {
